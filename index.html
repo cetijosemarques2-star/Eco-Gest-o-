@@ -101,7 +101,7 @@
         </div>
         <div>
           <label class="block text-xs font-bold mb-1">Nome da Escola</label>
-          <input type="text" id="inputEscolaEstudante" required placeholder="Ex.: Colégio Pedro II" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+          <input type="text" id="inputEscolaEstudante" required placeholder="Ex.: Escola Modelo" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold mb-1">Turma</label>
@@ -112,14 +112,14 @@
 
       <form id="formAdm" onsubmit="loginAdm(event)" class="space-y-3 hidden">
         <div>
-          <label class="block text-xs font-bold mb-1">Nome / Cargo</label>
-          <input type="text" id="inputNomeAdm" required placeholder="Ex.: Profe. Amanda / Gestão" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+          <label class="block text-xs font-bold mb-1">Nome / Cargo ADM</label>
+          <input type="text" id="inputNomeAdm" required placeholder="Ex.: Gestão Administrativa" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold mb-1">Senha ADM</label>
           <input type="password" id="inputSenhaAdm" required placeholder="Digite a senha ADM" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
         </div>
-        <p id="erroSenhaAdm" class="text-xs text-red-500 font-bold hidden">⚠️ Senha incorreta. Tente 'reciclagem2026'</p>
+        <p id="erroSenhaAdm" class="text-xs text-red-500 font-bold hidden">⚠️ Senha incorreta. Tente novamente.</p>
         <button type="submit" class="w-full py-3.5 btn-gradient rounded-xl text-sm">Entrar como ADM 🔐</button>
       </form>
     </div>
@@ -143,7 +143,7 @@
 
         <div class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 mb-4">
           <p class="text-[10px] uppercase font-bold text-slate-400">Instituição</p>
-          <p class="text-xs font-black truncate mt-0.5" id="lblEscolaSidebar">Carregando...</p>
+          <p class="text-xs font-black truncate mt-0.5" id="lblEscolaSidebar">Nenhuma Instituição</p>
           <span class="inline-block text-[10px] font-black px-2 py-0.5 rounded-full mt-1.5" id="lblPlanoSidebar">Plano...</span>
         </div>
 
@@ -176,7 +176,7 @@
       </div>
 
       <div class="pt-4 border-t text-center text-[10px] text-slate-400 font-medium">
-        EcoGestão v3.1 Realtime • Firebase 2026
+        EcoGestão v3.1 Realtime • Firebase
       </div>
     </aside>
 
@@ -187,7 +187,7 @@
           <button class="md:hidden text-2xl text-white" onclick="toggleDrawer()">☰</button>
           <div>
             <span class="text-xs font-bold text-emerald-200 uppercase">Painel Escolar Conectado</span>
-            <h1 class="text-xl md:text-2xl font-black mt-0.5" id="lblHeaderEscola">Nome da Escola</h1>
+            <h1 class="text-xl md:text-2xl font-black mt-0.5" id="lblHeaderEscola">Sem Escola Definida</h1>
           </div>
         </div>
 
@@ -209,7 +209,7 @@
           <div class="text-xs text-slate-400">Sincronizado via Firebase Realtime ☁️</div>
         </div>
 
-        <div class="card bg-gradient-to-r from-emerald-600/10 via-purple-600/10 to-blue-600/10 border-emerald-500/30">
+        <div id="cardEngajamentoEstudante" class="card bg-gradient-to-r from-emerald-600/10 via-purple-600/10 to-blue-600/10 border-emerald-500/30">
           <div class="flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4">
               <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-400 to-amber-600 flex items-center justify-center text-3xl shadow-lg">
@@ -217,18 +217,17 @@
               </div>
               <div>
                 <span class="text-xs font-bold text-amber-600 uppercase">Seu Nível de Engajamento</span>
-                <h3 class="text-xl font-black text-slate-800 dark:text-white" id="lblNivelUsuario">Nível 2 - Guardião Ecológico</h3>
-                <p class="text-xs text-slate-500">Pontuação Total: <b id="lblPontosUsuario" class="text-emerald-600">350 Pontos Eco</b></p>
+                <h3 class="text-xl font-black text-slate-800 dark:text-white" id="lblNivelUsuario">Iniciante Ecológico</h3>
+                <p class="text-xs text-slate-500">Pontuação Total: <b id="lblPontosUsuario" class="text-emerald-600">0 Pontos Eco</b></p>
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-xs font-extrabold shadow-sm border">🎖️ Medalha Reciclador Bronze</span>
-              <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-xs font-extrabold shadow-sm border">🚀 Top 3 Turma</span>
+              <span class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-xs font-extrabold shadow-sm border">🎖️ Participante Ativo</span>
             </div>
           </div>
         </div>
 
-        <div id="bannerPlanoBasico" class="card bg-gradient-to-r from-amber-500/10 to-purple-500/10 border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div id="bannerPlanoBasico" class="card bg-gradient-to-r from-amber-500/10 to-purple-500/10 border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4 hidden">
           <div class="flex items-center gap-3">
             <span class="text-2xl">⚡</span>
             <div>
@@ -249,8 +248,8 @@
           </div>
           <div class="card">
             <div class="text-2xl mb-1">👥</div>
-            <p class="text-xs font-bold text-slate-400 uppercase">Alunos Ativos</p>
-            <b id="kpiParticipantes" class="text-2xl font-black text-slate-800 dark:text-white">123</b>
+            <p class="text-xs font-bold text-slate-400 uppercase">Coletas Registradas</p>
+            <b id="kpiParticipantes" class="text-2xl font-black text-slate-800 dark:text-white">0</b>
           </div>
           <div class="card">
             <div class="text-2xl mb-1">🏆</div>
@@ -305,7 +304,7 @@
       <section id="page-coletas" class="hidden space-y-6 max-w-2xl mx-auto">
         <div>
           <h2 class="text-2xl font-black text-slate-800 dark:text-white">Lançar Nova Coleta ♻️</h2>
-          <p class="text-sm text-slate-500">Os dados salvos serão sincronizados com a nuvem instantaneamente.</p>
+          <p class="text-sm text-slate-500">Os dados salvos serão sincronizados na nuvem em tempo real.</p>
         </div>
 
         <div class="card space-y-4">
@@ -351,27 +350,27 @@
       <section id="page-desafios" class="hidden space-y-6">
         <div>
           <h2 class="text-2xl font-black text-slate-800 dark:text-white">Desafios, Gamificação & Prêmios 🎯</h2>
-          <p class="text-sm text-slate-500">Atividades e conquistas para motivar os alunos.</p>
+          <p class="text-sm text-slate-500">Atividades e conquistas ativas.</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
           <div class="card space-y-3 border-emerald-500/30">
             <span class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Desafio Semanal</span>
-            <h3 id="lblDesafioSemanaTitulo" class="text-lg font-black">Gincana do PET</h3>
-            <p id="lblDesafioSemanaDesc" class="text-xs text-slate-500">Acumule 50 kg de garrafas plásticas nesta semana.</p>
+            <h3 id="lblDesafioSemanaTitulo" class="text-lg font-black">Nenhum Desafio Semanal</h3>
+            <p id="lblDesafioSemanaDesc" class="text-xs text-slate-500">Aguardando definição do ADM.</p>
             <div class="pt-2 flex justify-between items-center text-xs font-bold text-emerald-600">
               <span>Recompensa: +150 Pontos Eco</span>
-              <button onclick="showToast('Desafio aceito! Pontos serão atribuídos às coletas da semana.', 'success')" class="px-3 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">Participar</button>
+              <button onclick="showToast('Desafio aceito!', 'success')" class="px-3 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">Participar</button>
             </div>
           </div>
 
           <div class="card space-y-3 border-purple-500/30">
             <span class="text-[10px] font-black uppercase tracking-wider text-purple-600">Desafio Mensal</span>
             <h3 id="lblDesafioMesTitulo" class="text-lg font-black">Escola Circular</h3>
-            <p id="lblDesafioMesDesc" class="text-xs text-slate-500">Atingir 300 kg de materiais recicláveis no mês.</p>
+            <p id="lblDesafioMesDesc" class="text-xs text-slate-500">Recicle e ajude a escola a atingir as metas ecológicas.</p>
             <div class="pt-2 flex justify-between items-center text-xs font-bold text-purple-600">
-              <span>Recompensa: Troféu Digital + Passe Passeio</span>
-              <button onclick="showToast('Sua turma já está cadastrada neste desafio mensal!', 'info')" class="px-3 py-1.5 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300">Ver Status</button>
+              <span>Recompensa: Troféu Digital</span>
+              <button onclick="showToast('Desafio mensal ativo!', 'info')" class="px-3 py-1.5 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300">Ver Status</button>
             </div>
           </div>
         </div>
@@ -389,11 +388,11 @@
             <p id="lblIndTotalKg" class="text-3xl font-black text-slate-800 dark:text-white mt-1">0 kg</p>
           </div>
           <div class="card">
-            <span class="text-xs font-bold text-slate-400 uppercase">Engajamento</span>
-            <p class="text-3xl font-black text-emerald-600 mt-1">123 Alunos</p>
+            <span class="text-xs font-bold text-slate-400 uppercase">Lançamentos</span>
+            <p id="lblIndLancamentos" class="text-3xl font-black text-emerald-600 mt-1">0</p>
           </div>
           <div class="card">
-            <span class="text-xs font-bold text-slate-400 uppercase">Meta Trimestral</span>
+            <span class="text-xs font-bold text-slate-400 uppercase">Meta Global</span>
             <p class="text-3xl font-black text-purple-600 mt-1">1.000 kg</p>
           </div>
         </div>
@@ -442,11 +441,11 @@
           </div>
           <div class="card">
             <span class="text-xs font-bold text-slate-400 uppercase">Parcerias e Apoio</span>
-            <p class="text-3xl font-black text-purple-600 mt-2">R$ 160,00</p>
+            <p class="text-3xl font-black text-purple-600 mt-2">R$ 0,00</p>
           </div>
           <div class="card border-2 border-emerald-500/50 bg-emerald-50/20">
             <span class="text-xs font-bold text-emerald-700 uppercase">Receita Total Gerada</span>
-            <p id="lblFinTotal" class="text-3xl font-black text-emerald-600 mt-2">R$ 160,00</p>
+            <p id="lblFinTotal" class="text-3xl font-black text-emerald-600 mt-2">R$ 0,00</p>
           </div>
         </div>
       </section>
@@ -454,7 +453,7 @@
       <section id="page-admin" class="hidden space-y-6">
         <div>
           <h2 class="text-2xl font-black text-slate-800 dark:text-white">Painel ADM Geral 🛠️</h2>
-          <p class="text-sm text-slate-500">Controle total gratuito do administrador de toda a plataforma.</p>
+          <p class="text-sm text-slate-500">Controle total do administrador de toda a plataforma.</p>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-6">
@@ -474,7 +473,7 @@
                   </tr>
                 </thead>
                 <tbody id="tabelaEscolasAdm" class="divide-y">
-                  </tbody>
+                </tbody>
               </table>
             </div>
           </div>
@@ -510,13 +509,12 @@
             <button onclick="filtrarLixeira('registros')" class="aba-lixeira px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs" data-cat="registros">📁 Registros Geral</button>
           </div>
 
-          <div id="containerLixeiraItens" class="space-y-2 text-xs">
-            </div>
+          <div id="containerLixeiraItens" class="space-y-2 text-xs"></div>
         </div>
       </section>
 
       <footer class="mt-12 text-center text-xs text-slate-400 py-6 border-t">
-        <p class="font-bold text-slate-600 dark:text-slate-300">EcoGestão • Firebase Realtime 2026</p>
+        <p class="font-bold text-slate-600 dark:text-slate-300">EcoGestão • Firebase Realtime</p>
         <p class="mt-1">Plataforma Inteligente de Reciclagem Escolar</p>
       </footer>
 
@@ -525,9 +523,8 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-    import { getDatabase, ref, set, onValue, push, remove, update } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
+    import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
 
-    // CONFIGURAÇÃO FIREBASE FORNECIDA
     const firebaseConfig = {
       apiKey: "AIzaSyC-T6bV7fqR5vA6crIR2_yg9AawpYhnlu4",
       authDomain: "gestaodogremio.firebaseapp.com",
@@ -542,19 +539,15 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ESTADO LOCAL GLOBAL
+    // ESTADO INICIAL ZERADO (SEM DADOS FICTÍCIOS)
     window.state = {
-      usuario: 'Estudante',
+      usuario: '',
       perfil: 'estudante',
-      escola: 'Escola Modelo',
-      turma: '2º Ano A',
+      escola: '',
+      turma: '',
       plano: 'Básico',
       metaKg: 1000,
-      turmas: [
-        { nome: '2º Ano A', kg: 320 },
-        { nome: '1º Ano B', kg: 270 },
-        { nome: '3º Ano A', kg: 210 }
-      ],
+      turmas: [],
       historicoColetas: [],
       precios: {
         'Plástico': 0.38,
@@ -563,20 +556,17 @@
         'Vidro': 0.18
       },
       desafioSemana: {
-        titulo: 'Gincana do PET',
-        desc: 'Acumule 50 kg de garrafas plásticas nesta semana.'
+        titulo: 'Nenhum Desafio Ativo',
+        desc: 'Aguardando lançamento pelo ADM.'
       },
-      escolasPlataforma: {
-        'Escola Modelo': { plano: 'Básico', pago: false },
-        'Colégio Pedro II': { plano: 'Premium', pago: true }
-      },
+      escolasPlataforma: {},
       lixeira: {
-        escolas: [{ id: 'lix1', nome: 'Escola Exemplo Desativada', data: '08/08/2026' }],
-        usuarios: [{ id: 'lix2', nome: 'Aluno Teste', data: '05/08/2026' }],
-        coletas: [{ id: 'lix3', info: '15.5 kg - Plástico - 3º Ano C', data: '01/08/2026' }],
-        desafios: [{ id: 'lix4', titulo: 'Desafio Antigo de Papelão', data: '20/07/2026' }],
-        turmas: [{ id: 'lix5', nome: '9º Ano C', data: '15/07/2026' }],
-        registros: [{ id: 'lix6', detalhe: 'Log de Importação Anterior', data: '10/07/2026' }]
+        escolas: [],
+        usuarios: [],
+        coletas: [],
+        desafios: [],
+        turmas: [],
+        registros: []
       },
       categoriaLixeiraAtual: 'escolas'
     };
@@ -584,7 +574,7 @@
     let chartDashInstance = null;
     let chartMatInstance = null;
 
-    // ESCUTAR MUDANÇAS NO FIREBASE REALTIME
+    // BANCO DE DADOS EM TEMPO REAL
     const appRef = ref(db, 'ecogestao');
     onValue(appRef, (snapshot) => {
       const data = snapshot.val();
@@ -595,12 +585,22 @@
         if (data.lixeira) window.state.lixeira = data.lixeira;
         if (data.historicoColetas) {
           window.state.historicoColetas = Object.values(data.historicoColetas);
+          recalcularTurmas();
         }
         atualizarInterface();
       }
     });
 
-    // FUNÇÕES DE SINCRONIZAÇÃO NO FIREBASE
+    function recalcularTurmas() {
+      const mapaTurmas = {};
+      window.state.historicoColetas.forEach(c => {
+        if (c.turma) {
+          mapaTurmas[c.turma] = (mapaTurmas[c.turma] || 0) + (parseFloat(c.kg) || 0);
+        }
+      });
+      window.state.turmas = Object.entries(mapaTurmas).map(([nome, kg]) => ({ nome, kg }));
+    }
+
     window.salvarColetaFirebase = function(novaColeta) {
       const coletasRef = ref(db, 'ecogestao/historicoColetas');
       push(coletasRef, novaColeta);
@@ -615,7 +615,6 @@
       });
     }
 
-    // TOAST
     window.showToast = function(mensagem, tipo = 'info') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -633,7 +632,7 @@
 
     window.exigirPremium = function() {
       if (window.state.plano !== 'Premium' && window.state.perfil !== 'adm') {
-        showToast('🔒 Recurso exclusivo do Plano Premium! Solicite alteração ao ADM.', 'warning');
+        showToast('🔒 Recurso exclusivo do Plano Premium! Solicite ao ADM.', 'warning');
         return false;
       }
       return true;
@@ -647,13 +646,13 @@
       document.getElementById('erroSenhaAdm').classList.add('hidden');
 
       if (tipo === 'estudante') {
-        tabEst.className = 'p-3.5 border-2 border-emerald-600 bg-emerald-50 text-emerald-900 rounded-2xl font-bold text-xs';
-        tabAdm.className = 'p-3.5 border-2 border-slate-200 text-slate-600 rounded-2xl font-bold text-xs';
+        tabEst.className = 'p-3.5 border-2 border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 rounded-2xl font-bold text-xs flex flex-col justify-between';
+        tabAdm.className = 'p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl font-bold text-xs flex flex-col justify-between';
         formEst.classList.remove('hidden');
         formAdm.classList.add('hidden');
       } else {
-        tabAdm.className = 'p-3.5 border-2 border-purple-600 bg-purple-50 text-purple-900 rounded-2xl font-bold text-xs';
-        tabEst.className = 'p-3.5 border-2 border-slate-200 text-slate-600 rounded-2xl font-bold text-xs';
+        tabAdm.className = 'p-3.5 border-2 border-purple-600 bg-purple-50 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 rounded-2xl font-bold text-xs flex flex-col justify-between';
+        tabEst.className = 'p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl font-bold text-xs flex flex-col justify-between';
         formAdm.classList.remove('hidden');
         formEst.classList.add('hidden');
       }
@@ -662,8 +661,8 @@
     window.loginEstudante = function(e) {
       if (e) e.preventDefault();
       window.state.usuario = document.getElementById('inputNomeEstudante').value.trim() || 'Estudante';
-      window.state.escola = document.getElementById('inputEscolaEstudante').value.trim() || 'Escola Modelo';
-      window.state.turma = document.getElementById('inputTurmaEstudante').value.trim() || '2º Ano A';
+      window.state.escola = document.getElementById('inputEscolaEstudante').value.trim() || 'Escola Sem Nome';
+      window.state.turma = document.getElementById('inputTurmaEstudante').value.trim() || 'Sem Turma';
       window.state.perfil = 'estudante';
 
       if (!window.state.escolasPlataforma[window.state.escola]) {
@@ -681,19 +680,32 @@
         document.getElementById('erroSenhaAdm').classList.remove('hidden');
         return;
       }
-      window.state.usuario = document.getElementById('inputNomeAdm').value.trim() || 'Gestão ADM';
+      window.state.usuario = document.getElementById('inputNomeAdm').value.trim() || 'Administrador';
       window.state.perfil = 'adm';
-      window.state.plano = 'Premium'; // ADM Geral tem acesso Premium livre
+      window.state.escola = 'Administração Geral';
+      window.state.turma = ''; // ADM não pertence a turmas
+      window.state.plano = 'Premium';
 
       concluirAcesso();
     }
 
     function concluirAcesso() {
       document.getElementById('login-modal').classList.add('hidden');
+      
       document.querySelectorAll('.area-adm').forEach(el => {
         if (window.state.perfil === 'adm') el.classList.remove('hidden');
         else el.classList.add('hidden');
       });
+
+      const cardEng = document.getElementById('cardEngajamentoEstudante');
+      if (cardEng) {
+        if (window.state.perfil === 'adm') {
+          cardEng.classList.add('hidden');
+        } else {
+          cardEng.classList.remove('hidden');
+        }
+      }
+
       atualizarInterface();
       navigate('dashboard');
       showToast(`Conectado como ${window.state.usuario}! ☁️`, 'success');
@@ -726,10 +738,6 @@
 
       if (!turma || isNaN(kg) || kg <= 0) return;
 
-      let itemTurma = window.state.turmas.find(t => t.nome.toLowerCase() === turma.toLowerCase());
-      if (itemTurma) itemTurma.kg += kg;
-      else window.state.turmas.push({ nome: turma, kg: kg });
-
       const novaColeta = {
         turma: turma,
         tipo: tipo,
@@ -743,7 +751,6 @@
       document.getElementById('inputTurmaColeta').value = '';
       document.getElementById('inputKgColeta').value = '';
 
-      atualizarInterface();
       showToast(`Coleta de ${kg} kg enviada para o Firebase Realtime! 🚀`, 'success');
     }
 
@@ -752,12 +759,11 @@
       const precoMedio = (window.state.precios['Plástico'] + window.state.precios['Papel/Papelão'] + window.state.precios['Metal'] + window.state.precios['Vidro']) / 4;
       const valorVenda = totalKg * precoMedio;
 
-      document.getElementById('lblNomeUsuario').innerText = window.state.usuario;
+      document.getElementById('lblNomeUsuario').innerText = window.state.usuario || 'Usuário';
       document.getElementById('lblPerfilBadge').innerText = window.state.perfil === 'adm' ? 'ADM Geral' : 'Estudante';
-      document.getElementById('lblEscolaSidebar').innerText = window.state.escola;
-      document.getElementById('lblHeaderEscola').innerText = window.state.escola;
+      document.getElementById('lblEscolaSidebar').innerText = window.state.escola || 'Nenhuma Instituição';
+      document.getElementById('lblHeaderEscola').innerText = window.state.escola || 'Sem Escola Definida';
 
-      // Banner do Plano
       const lblPlanoSidebar = document.getElementById('lblPlanoSidebar');
       const bannerPlanoBasico = document.getElementById('bannerPlanoBasico');
 
@@ -773,10 +779,11 @@
 
       document.getElementById('kpiTotalKg').innerText = `${totalKg.toLocaleString('pt-BR')} kg`;
       document.getElementById('lblIndTotalKg').innerText = `${totalKg.toLocaleString('pt-BR')} kg`;
+      document.getElementById('kpiParticipantes').innerText = window.state.historicoColetas.length;
+      document.getElementById('lblIndLancamentos').innerText = window.state.historicoColetas.length;
       document.getElementById('kpiTurmasCount').innerText = window.state.turmas.length;
       document.getElementById('kpiValorGerado').innerText = `R$ ${valorVenda.toFixed(2).replace('.', ',')}`;
 
-      // Métricas Ecológicas
       document.getElementById('lblArvoresSalvas').innerText = Math.round(totalKg * 0.02);
       document.getElementById('lblAguaEconomizada').innerText = `${Math.round(totalKg * 26).toLocaleString('pt-BR')} L`;
       document.getElementById('lblCo2Evitado').innerText = `${Math.round(totalKg * 1.5).toLocaleString('pt-BR')} kg`;
@@ -787,7 +794,7 @@
       document.getElementById('lblMetaAtual').innerText = totalKg.toLocaleString('pt-BR');
 
       document.getElementById('lblFinVenda').innerText = `R$ ${valorVenda.toFixed(2).replace('.', ',')}`;
-      document.getElementById('lblFinTotal').innerText = `R$ ${(valorVenda + 160).toFixed(2).replace('.', ',')}`;
+      document.getElementById('lblFinTotal').innerText = `R$ ${valorVenda.toFixed(2).replace('.', ',')}`;
 
       document.getElementById('lblDesafioSemanaTitulo').innerText = window.state.desafioSemana.titulo;
       document.getElementById('lblDesafioSemanaDesc').innerText = window.state.desafioSemana.desc;
@@ -804,6 +811,11 @@
       const container = document.getElementById('containerRanking');
       if (!container) return;
       container.innerHTML = '';
+
+      if (window.state.turmas.length === 0) {
+        container.innerHTML = '<p class="text-slate-400 italic py-4 text-center">Nenhuma turma com coletas registradas até o momento.</p>';
+        return;
+      }
 
       const turmasOrdenadas = [...window.state.turmas].sort((a, b) => b.kg - a.kg);
       const maiorKg = turmasOrdenadas[0]?.kg || 1;
@@ -825,7 +837,7 @@
                 <div class="progress-fill h-full" style="width: ${pct}%"></div>
               </div>
             </div>
-            <button onclick="enviarParaLixeira('turmas', '${turma.nome}')" class="area-adm hidden text-red-500 hover:text-red-700 text-xs font-bold" title="Mover Turma para Lixeira">🗑️ Excluir</button>
+            <button onclick="enviarParaLixeira('turmas', '${turma.nome}')" class="area-adm ${window.state.perfil === 'adm' ? '' : 'hidden'} text-red-500 hover:text-red-700 text-xs font-bold" title="Mover Turma para Lixeira">🗑️ Excluir</button>
           </div>
         `;
       });
@@ -836,7 +848,7 @@
       if (!container) return;
 
       if (window.state.historicoColetas.length === 0) {
-        container.innerHTML = '<p class="text-slate-400 italic">Nenhum lançamento registrado nesta sessão.</p>';
+        container.innerHTML = '<p class="text-slate-400 italic py-2">Nenhum lançamento registrado nesta sessão.</p>';
         return;
       }
 
@@ -848,7 +860,7 @@
           </div>
           <div class="text-right">
             <span class="text-slate-500 font-bold">${c.kg} kg • ${c.data}</span>
-            <button onclick="enviarParaLixeira('coletas', '${c.turma} - ${c.kg}kg')" class="area-adm hidden text-red-500 text-[10px] ml-2 font-bold">🗑️</button>
+            <button onclick="enviarParaLixeira('coletas', '${c.turma} - ${c.kg}kg')" class="area-adm ${window.state.perfil === 'adm' ? '' : 'hidden'} text-red-500 text-[10px] ml-2 font-bold">🗑️</button>
           </div>
         </div>
       `).join('');
@@ -858,7 +870,13 @@
       const container = document.getElementById('tabelaEscolasAdm');
       if (!container) return;
 
-      container.innerHTML = Object.entries(window.state.escolasPlataforma).map(([nome, info]) => `
+      const escolas = Object.entries(window.state.escolasPlataforma);
+      if (escolas.length === 0) {
+        container.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-slate-400 italic">Nenhuma escola cadastrada.</td></tr>';
+        return;
+      }
+
+      container.innerHTML = escolas.map(([nome, info]) => `
         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800">
           <td class="py-3 font-bold">${nome}</td>
           <td class="py-3">
@@ -898,7 +916,6 @@
       }
     }
 
-    // SISTEMA DE LIXEIRA CATEGORIZADA E RESTAURAÇÃO
     window.filtrarLixeira = function(categoria) {
       window.state.categoriaLixeiraAtual = categoria;
       document.querySelectorAll('.aba-lixeira').forEach(btn => {
@@ -959,7 +976,7 @@
         if (cat === 'escolas') {
           window.state.escolasPlataforma[item.nome] = { plano: 'Básico', pago: false };
         } else if (cat === 'turmas') {
-          window.state.turmas.push({ nome: item.nome, kg: 50 });
+          window.state.turmas.push({ nome: item.nome, kg: 0 });
         }
         window.state.lixeira[cat].splice(idx, 1);
         salvarEstadoFirebase();
@@ -1019,10 +1036,10 @@
         chartDashInstance = new Chart(elDash.getContext('2d'), {
           type: 'line',
           data: {
-            labels: ['Mai', 'Jun', 'Jul', 'Ago'],
+            labels: ['Mês 1', 'Mês 2', 'Mês 3', 'Mês Atual'],
             datasets: [{
               label: 'Kg Coletados',
-              data: [120, 240, 310, totalKg],
+              data: [0, 0, 0, totalKg],
               borderColor: '#2E8B3C',
               backgroundColor: 'rgba(46, 139, 60, 0.1)',
               fill: true,
@@ -1036,12 +1053,18 @@
       const elMat = document.getElementById('chartMateriais');
       if (elMat) {
         if (chartMatInstance) chartMatInstance.destroy();
+        
+        const totMat = { 'Plástico': 0, 'Papel/Papelão': 0, 'Metal': 0, 'Vidro': 0 };
+        window.state.historicoColetas.forEach(c => {
+          if (totMat[c.tipo] !== undefined) totMat[c.tipo] += parseFloat(c.kg) || 0;
+        });
+
         chartMatInstance = new Chart(elMat.getContext('2d'), {
           type: 'doughnut',
           data: {
             labels: ['Plástico', 'Papel/Papelão', 'Metal', 'Vidro'],
             datasets: [{
-              data: [45, 30, 15, 10],
+              data: [totMat['Plástico'], totMat['Papel/Papelão'], totMat['Metal'], totMat['Vidro']],
               backgroundColor: ['#2E8B3C', '#4C36A8', '#F59E0B', '#64748B']
             }]
           },
