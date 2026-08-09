@@ -80,7 +80,7 @@
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1">Senha de ADM</label>
           <input id="inputSenhaAdm" type="password" placeholder="Digite a senha de administrador" required class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none focus:ring-2 focus:ring-purple-500">
-          <p id="erroSenhaAdm" class="text-xs text-red-500 mt-1 hidden">Senha incorreta! Digite reciclagem2026</p>
+          <p id="erroSenhaAdm" class="text-xs text-red-500 mt-1 hidden">Senha incorreta! Tente novamente.</p>
         </div>
         <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-xs shadow-lg transition">Acessar Painel ADM 🛠️</button>
       </form>
@@ -144,7 +144,7 @@
       <div id="bannerPlanoBasico" class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 hidden">
         <div>
           <h4 class="font-bold text-amber-800 dark:text-amber-300 text-sm">Você está utilizando o Plano Básico 💡</h4>
-          <p class="text-xs text-amber-700/80 dark:text-amber-400">Modo apenas de visualização. Solicite o Plano Premium para liberar cadastros e interações!</p>
+          <p class="text-xs text-amber-700/80 dark:text-amber-400">Modo de visualização. Solicite o Plano Premium para liberar cadastros e interações!</p>
         </div>
         <button id="btnSolicitarPremium" onclick="solicitarPlanoPremium()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs transition">
           Solicitar Premium ⭐
@@ -327,7 +327,7 @@
             <span class="text-xs font-bold text-slate-400 uppercase">Venda de Recicláveis</span>
             <p id="lblFinVenda" class="text-3xl font-black text-slate-800 dark:text-white mt-2">R$ 0,00</p>
           </div>
-          <div class="p-5          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
+          <div class="p-5 rounded-2xl          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
             <span class="text-xs font-bold text-slate-400 uppercase">Parcerias e Apoio</span>
             <p class="text-3xl font-black text-purple-600 mt-2">R$ 0,00</p>
           </div>
@@ -346,7 +346,7 @@
 
         <div class="p-5 rounded-2xl space-y-4 border-2 border-amber-500/50 bg-amber-500/5 shadow-sm">
           <h3 class="font-black text-slate-800 dark:text-white flex items-center gap-2">
-            <span>📩</span> <span>Solicitações de Plano Premium Pendentes</span>
+            <span>📩</span> <span>Solicitações de Plano Premium Pendentes (Tempo Real)</span>
           </h3>
           <div id="containerSolicitacoesPremium" class="space-y-2 text-xs">
             <p class="text-slate-400 italic">Nenhuma solicitação pendente no momento.</p>
@@ -420,7 +420,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-    import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
+    import { getDatabase, ref, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC-T6bV7fqR5vA6crIR2_yg9AawpYhnlu4",
@@ -471,34 +471,37 @@
     let chartDashInstance = null;
     let chartMatInstance = null;
 
+    // ESCUTA EM TEMPO REAL NO FIREBASE
     const appRef = ref(db, 'ecogestao');
     onValue(appRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        if (data.precios) window.state.precios = data.precios;
-        if (data.desafioSemana) window.state.desafioSemana = data.desafioSemana;
-        if (data.escolasPlataforma) window.state.escolasPlataforma = data.escolasPlataforma;
-        if (data.solicitacoesPremium) window.state.solicitacoesPremium = data.solicitacoesPremium;
-        if (data.lixeira) window.state.lixeira = data.lixeira;
-        
-        if (data.historicoColetas) {
-          const todasColetas = Object.values(data.historicoColetas);
-          if (window.state.perfil === 'estudante' && window.state.escola) {
-            window.state.historicoColetas = todasColetas.filter(c => c.escola === window.state.escola);
-          } else {
-            window.state.historicoColetas = todasColetas;
-          }
-          recalcularTurmas();
-        }
-
+      const data = snapshot.val() || {};
+      
+      if (data.precios) window.state.precios = data.precios;
+      if (data.desafioSemana) window.state.desafioSemana = data.desafioSemana;
+      window.state.escolasPlataforma = data.escolasPlataforma || {};
+      window.state.solicitacoesPremium = data.solicitacoesPremium || {};
+      window.state.lixeira = data.lixeira || { escolas: [], coletas: [], turmas: [] };
+      
+      if (data.historicoColetas) {
+        const todasColetas = Object.values(data.historicoColetas);
         if (window.state.perfil === 'estudante' && window.state.escola) {
-          if (window.state.escolasPlataforma[window.state.escola]) {
-            window.state.plano = window.state.escolasPlataforma[window.state.escola].plano;
-          }
+          window.state.historicoColetas = todasColetas.filter(c => c.escola === window.state.escola);
+        } else {
+          window.state.historicoColetas = todasColetas;
         }
-
-        atualizarInterface();
+        recalcularTurmas();
+      } else {
+        window.state.historicoColetas = [];
+        window.state.turmas = [];
       }
+
+      if (window.state.perfil === 'estudante' && window.state.escola) {
+        if (window.state.escolasPlataforma[window.state.escola]) {
+          window.state.plano = window.state.escolasPlataforma[window.state.escola].plano || 'Básico';
+        }
+      }
+
+      atualizarInterface();
     });
 
     function recalcularTurmas() {
@@ -570,11 +573,10 @@
 
       if (!window.state.escolasPlataforma[nomeEscola]) {
         window.state.escolasPlataforma[nomeEscola] = { plano: 'Básico', pago: false };
-        salvarEstadoFirebase();
+        set(ref(db, `ecogestao/escolasPlataforma/${nomeEscola}`), { plano: 'Básico', pago: false });
       }
 
-      window.state.plano = window.state.escolasPlataforma[nomeEscola].plano;
-
+      window.state.plano = window.state.escolasPlataforma[nomeEscola]?.plano || 'Básico';
       concluirAcesso();
     }
 
@@ -632,31 +634,34 @@
       }
     }
 
+    // SOLICITAR PLANO PREMIUM EM TEMPO REAL
     window.solicitarPlanoPremium = function() {
-      const escola = window.state.escola || 'Escola Sem Nome';
+      const escola = window.state.escola;
       if (!escola) {
         showToast('⚠️ Nome da escola não identificado.', 'warning');
         return;
       }
 
-      const chaveSolicitacao = escola.replace(/[^a-zA-Z0-9]/g, '_');
-      if (!window.state.solicitacoesPremium) window.state.solicitacoesPremium = {};
-
-      window.state.solicitacoesPremium[chaveSolicitacao] = {
+      const chaveSolicitacao = escola.replace(/[.#$/[\]]/g, '_');
+      const payload = {
         escola: escola,
         solicitante: window.state.usuario || 'Estudante',
         data: new Date().toLocaleDateString('pt-BR')
       };
 
-      salvarEstadoFirebase();
-      showToast('🚀 Solicitação enviada ao ADM! Aguarde a liberação.', 'success');
-
-      const btn = document.getElementById('btnSolicitarPremium');
-      if (btn) {
-        btn.innerText = 'Solicitação Enviada ✅';
-        btn.disabled = true;
-        btn.classList.add('opacity-50', 'cursor-not-allowed');
-      }
+      set(ref(db, `ecogestao/solicitacoesPremium/${chaveSolicitacao}`), payload)
+        .then(() => {
+          showToast('🚀 Solicitação enviada em Tempo Real ao ADM!', 'success');
+          const btn = document.getElementById('btnSolicitarPremium');
+          if (btn) {
+            btn.innerText = 'Solicitação Enviada ✅';
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+          }
+        })
+        .catch(() => {
+          showToast('❌ Erro ao enviar solicitação.', 'error');
+        });
     }
 
     window.salvarColeta = function(e) {
@@ -871,7 +876,7 @@
       }
 
       container.innerHTML = solicitacoes.map(([key, sol]) => `
-        <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border flex justify-between items-center">
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border flex justify-between items-center shadow-sm">
           <div>
             <b class="text-sm text-slate-800 dark:text-white">${sol.escola}</b>
             <span class="text-slate-400 block">Solicitado por: ${sol.solicitante} (${sol.data})</span>
@@ -885,41 +890,35 @@
     }
 
     window.aprovarSolicitacaoPremium = function(key, nomeEscola) {
-      if (!window.state.escolasPlataforma[nomeEscola]) {
-        window.state.escolasPlataforma[nomeEscola] = { plano: 'Premium', pago: true };
-      } else {
-        window.state.escolasPlataforma[nomeEscola].plano = 'Premium';
-        window.state.escolasPlataforma[nomeEscola].pago = true;
-      }
-      delete window.state.solicitacoesPremium[key];
-      salvarEstadoFirebase();
-      atualizarInterface();
+      set(ref(db, `ecogestao/escolasPlataforma/${nomeEscola}`), {
+        plano: 'Premium',
+        pago: true
+      });
+      remove(ref(db, `ecogestao/solicitacoesPremium/${key}`));
       showToast(`A escola ${nomeEscola} agora é Premium! ⭐`, 'success');
     }
 
     window.recusarSolicitacaoPremium = function(key) {
-      delete window.state.solicitacoesPremium[key];
-      salvarEstadoFirebase();
-      atualizarInterface();
+      remove(ref(db, `ecogestao/solicitacoesPremium/${key}`));
       showToast('Solicitação recusada com sucesso.', 'info');
     }
 
     window.alterarPlanoEscola = function(nomeEscola, novoPlano) {
-      if (window.state.escolasPlataforma[nomeEscola]) {
-        window.state.escolasPlataforma[nomeEscola].plano = novoPlano;
-        salvarEstadoFirebase();
-        atualizarInterface();
-        showToast(`Plano da escola ${nomeEscola} alterado para ${novoPlano}!`, 'success');
-      }
+      const pagoAtual = window.state.escolasPlataforma[nomeEscola]?.pago || false;
+      set(ref(db, `ecogestao/escolasPlataforma/${nomeEscola}`), {
+        plano: novoPlano,
+        pago: novoPlano === 'Premium' ? true : pagoAtual
+      });
+      showToast(`Plano da escola ${nomeEscola} alterado para ${novoPlano}!`, 'success');
     }
 
     window.togglePagamentoEscola = function(nomeEscola) {
-      if (window.state.escolasPlataforma[nomeEscola]) {
-        window.state.escolasPlataforma[nomeEscola].pago = !window.state.escolasPlataforma[nomeEscola].pago;
-        salvarEstadoFirebase();
-        atualizarInterface();
-        showToast(`Status de pagamento da escola ${nomeEscola} atualizado!`, 'info');
-      }
+      const escola = window.state.escolasPlataforma[nomeEscola] || { plano: 'Básico', pago: false };
+      set(ref(db, `ecogestao/escolasPlataforma/${nomeEscola}`), {
+        plano: escola.plano,
+        pago: !escola.pago
+      });
+      showToast(`Status de pagamento da escola ${nomeEscola} atualizado!`, 'info');
     }
 
     window.filtrarLixeira = function(categoria) {
@@ -972,7 +971,6 @@
       if (categoria === 'turmas') window.state.turmas = window.state.turmas.filter(t => t.nome !== infoItem);
 
       salvarEstadoFirebase();
-      atualizarInterface();
       showToast(`Item movido para a lixeira! 🗑️`, 'warning');
     }
 
@@ -986,7 +984,6 @@
         }
         window.state.lixeira[cat].splice(idx, 1);
         salvarEstadoFirebase();
-        atualizarInterface();
         showToast('Item restaurado com sucesso! 🔄', 'success');
       }
     }
@@ -994,7 +991,6 @@
     window.excluirDefinitivoLixeira = function(cat, idx) {
       window.state.lixeira[cat].splice(idx, 1);
       salvarEstadoFirebase();
-      atualizarInterface();
       showToast('Item excluído permanentemente!', 'error');
     }
 
@@ -1014,7 +1010,6 @@
         window.state.precios[inp.dataset.preco] = parseFloat(inp.value) || 0;
       });
       salvarEstadoFirebase();
-      atualizarInterface();
       showToast('Preços por material salvos no Firebase! 💰', 'success');
     }
 
@@ -1022,7 +1017,6 @@
       window.state.desafioSemana.titulo = document.getElementById('inputSemanaTitulo').value || window.state.desafioSemana.titulo;
       window.state.desafioSemana.desc = document.getElementById('inputSemanaDesc').value || window.state.desafioSemana.desc;
       salvarEstadoFirebase();
-      atualizarInterface();
       showToast('Desafio atualizado na nuvem! 🎯', 'success');
     }
 
