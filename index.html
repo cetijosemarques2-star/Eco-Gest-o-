@@ -1,337 +1,750 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoGestão - Plataforma Escolar</title>
+  <title>EcoGestão • Plataforma Inteligente de Reciclagem Escolar</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <script>
     tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            emerald: {
-              50: '#ecfdf5', 100: '#d1fae5', 500: '#10b981', 600: '#059669', 700: '#047857', 800: '#065f46', 950: '#022c22'
-            }
-          }
-        }
-      }
+      darkMode: 'class'
     }
   </script>
+
   <style>
-    .toast { transition: all 0.3s ease; }
-    .nav-btn.nav-active { background-color: rgba(16, 185, 129, 0.15); color: #059669; font-weight: bold; }
-    .dark .nav-btn.nav-active { color: #34d399; }
-    .progress-bar { background-color: rgba(0,0,0,0.05); border-radius: 9999px; overflow: hidden; }
-    .progress-fill { background: linear-gradient(90deg, #10b981, #059669); transition: width 0.5s ease; }
-    #sidebar { transition: transform 0.3s ease-in-out; }
+    :root {
+      --eco-dark: #022c22;
+      --eco-deep: #064e3b;
+      --eco-green: #059669;
+      --eco-light: #10b981;
+      --eco-mint: #2dd4bf;
+      --eco-blue: #0ea5e9;
+      --eco-purple: #8b5cf6;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #10b981 transparent;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 10% 10%, rgba(16,185,129,.06), transparent 25%),
+        radial-gradient(circle at 90% 20%, rgba(45,212,191,.05), transparent 25%),
+        #f8fafc;
+    }
+
+    .dark body {
+      background:
+        radial-gradient(circle at 10% 10%, rgba(16,185,129,.08), transparent 25%),
+        radial-gradient(circle at 90% 20%, rgba(45,212,191,.06), transparent 25%),
+        #020617;
+    }
+
+    /* =========================================================
+       HEADER / DEGRADÊ SUPERIOR
+       ========================================================= */
+
+    main {
+      position: relative;
+    }
+
+    main::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 250px;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.13) 0 35px, transparent 36px),
+        radial-gradient(circle at 80% 35%, rgba(255,255,255,.08) 0 70px, transparent 71px),
+        linear-gradient(
+          135deg,
+          #022c22 0%,
+          #064e3b 38%,
+          #059669 72%,
+          #2dd4bf 100%
+        );
+      border-radius: 0 0 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 1;
+    }
+
+    main::after {
+      content: "♻";
+      position: absolute;
+      right: 8%;
+      top: 40px;
+      font-size: 150px;
+      color: rgba(255,255,255,.045);
+      transform: rotate(-12deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* =========================================================
+       SIDEBAR
+       ========================================================= */
+
+    #sidebar {
+      transition: transform .3s ease-in-out, box-shadow .3s ease;
+      box-shadow: 8px 0 30px rgba(2,44,34,.05);
+    }
+
+    #sidebar.open {
+      transform: translateX(0) !important;
+    }
+
+    #sidebar > div:first-child > div:first-child {
+      padding: 12px;
+      border-radius: 20px;
+      background: linear-gradient(
+        135deg,
+        rgba(2,44,34,.04),
+        rgba(16,185,129,.08)
+      );
+    }
+
+    .dark #sidebar {
+      box-shadow: 8px 0 30px rgba(0,0,0,.2);
+    }
+
+    .nav-btn {
+      transition: all .2s ease;
+      border: 1px solid transparent;
+    }
+
+    .nav-btn:hover {
+      background: rgba(16,185,129,.08);
+      transform: translateX(3px);
+    }
+
+    .nav-btn.nav-active {
+      background: linear-gradient(
+        90deg,
+        rgba(16,185,129,.16),
+        rgba(45,212,191,.06)
+      );
+      color: #059669;
+      font-weight: 900;
+      border-left: 3px solid #10b981;
+      box-shadow: inset 0 0 20px rgba(16,185,129,.04);
+    }
+
+    .dark .nav-btn.nav-active {
+      color: #34d399;
+      background: linear-gradient(
+        90deg,
+        rgba(16,185,129,.18),
+        rgba(45,212,191,.05)
+      );
+    }
+
+    /* =========================================================
+       CARDS
+       ========================================================= */
+
+    main .bg-white,
+    main .dark\:bg-slate-900 {
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+    }
+
+    main .bg-white:hover {
+      box-shadow: 0 12px 35px rgba(15,23,42,.07);
+    }
+
+    .dark main .bg-white:hover {
+      box-shadow: 0 12px 35px rgba(0,0,0,.25);
+    }
+
+    /* Cards KPI */
+    #page-dashboard > div:nth-child(2) > div {
+      position: relative;
+      overflow: hidden;
+      border-radius: 22px;
+      box-shadow: 0 8px 25px rgba(15,23,42,.05);
+    }
+
+    #page-dashboard > div:nth-child(2) > div::after {
+      content: "";
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      right: -25px;
+      bottom: -25px;
+      border-radius: 50%;
+      background: rgba(16,185,129,.07);
+    }
+
+    /* =========================================================
+       TÍTULOS
+       ========================================================= */
+
+    #page-dashboard > div:first-child h1,
+    section h2 {
+      color: white !important;
+      text-shadow: 0 2px 15px rgba(0,0,0,.18);
+    }
+
+    #page-dashboard > div:first-child p,
+    section h2 + p {
+      color: rgba(255,255,255,.75) !important;
+    }
+
+    /* =========================================================
+       META
+       ========================================================= */
+
+    .progress-bar {
+      background: rgba(15,23,42,.07);
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
+    }
+
+    .progress-fill {
+      background: linear-gradient(
+        90deg,
+        #059669,
+        #10b981,
+        #2dd4bf
+      );
+      transition: width .7s cubic-bezier(.4,0,.2,1);
+      box-shadow: 0 0 12px rgba(16,185,129,.35);
+    }
+
+    /* =========================================================
+       FORMULÁRIOS
+       ========================================================= */
+
+    input,
+    select {
+      transition: all .2s ease !important;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #10b981 !important;
+      box-shadow: 0 0 0 4px rgba(16,185,129,.1) !important;
+      transform: translateY(-1px);
+    }
+
+    button {
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        opacity .2s ease;
+    }
+
+    button:not(:disabled):hover {
+      transform: translateY(-1px);
+    }
+
+    button:not(:disabled):active {
+      transform: translateY(0);
+    }
+
+    .btn-acao {
+      background: linear-gradient(
+        135deg,
+        #059669,
+        #10b981
+      ) !important;
+      box-shadow: 0 8px 20px rgba(5,150,105,.2);
+    }
+
+    .btn-acao:hover {
+      box-shadow: 0 10px 25px rgba(5,150,105,.3);
+    }
+
+    /* =========================================================
+       LOGIN
+       ========================================================= */
+
+    #login-modal {
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(16,185,129,.25),
+          transparent 35%
+        ),
+        rgba(2,44,34,.88);
+    }
+
+    #login-modal > div {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(16,185,129,.2);
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.3),
+        0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    #login-modal > div::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 7px;
+      background: linear-gradient(
+        90deg,
+        #022c22,
+        #059669,
+        #10b981,
+        #2dd4bf
+      );
+    }
+
+    /* =========================================================
+       DESAFIOS
+       ========================================================= */
+
+    #page-dashboard .border-emerald-500\/30 {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(16,185,129,.07),
+          rgba(255,255,255,.8)
+        );
+    }
+
+    #page-dashboard .border-purple-500\/30 {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(139,92,246,.07),
+          rgba(255,255,255,.8)
+        );
+    }
+
+    /* =========================================================
+       RANKING
+       ========================================================= */
+
+    #containerRanking > div {
+      border: 1px solid rgba(148,163,184,.15);
+      transition: all .2s ease;
+    }
+
+    #containerRanking > div:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 20px rgba(15,23,42,.06);
+    }
+
+    /* =========================================================
+       IMPACTO ECOLÓGICO
+       ========================================================= */
+
+    #page-indicadores .grid.md\:grid-cols-3 > div {
+      border-radius: 22px;
+      box-shadow: 0 8px 25px rgba(15,23,42,.05);
+    }
+
+    #page-indicadores .grid.grid-cols-1 > div {
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    #page-indicadores .grid.grid-cols-1 > div:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(15,23,42,.08);
+    }
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    #mobileOverlay {
+      backdrop-filter: blur(4px);
+    }
+
     @media (max-width: 768px) {
-      #sidebar { transform: translateX(-100%); }
-      #sidebar.open { transform: translateX(0); }
+      main {
+        padding-top: 10px;
+      }
+
+      main::before {
+        height: 300px;
+        border-radius: 0 0 30px 30px;
+      }
+
+      main::after {
+        font-size: 100px;
+        top: 60px;
+        right: 5%;
+      }
+
+      #page-dashboard > div:nth-child(2) {
+        gap: 10px;
+      }
+
+      #page-dashboard > div:nth-child(2) > div {
+        padding: 14px;
+      }
+
+      #page-dashboard > div:nth-child(2) p {
+        font-size: 1.25rem;
+      }
+
+      .overflow-x-auto {
+        border-radius: 16px;
+      }
+    }
+
+    /* =========================================================
+       TOAST
+       ========================================================= */
+
+    .toast {
+      transition: all .3s ease;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 35px rgba(0,0,0,.15);
+    }
+
+    /* =========================================================
+       SCROLLBAR
+       ========================================================= */
+
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #059669;
     }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-full flex flex-col font-sans">
 
-  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen font-sans">
 
-  <div id="login-modal" class="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-6">
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <div id="mobileOverlay" onclick="toggleDrawer()" class="fixed inset-0 bg-slate-900/60 z-30 hidden md:hidden"></div>
+
+  <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl p-6 sm:p-8 space-y-6">
       <div class="text-center space-y-2">
         <span class="text-4xl">🌱</span>
-        <h2 class="text-2xl font-black text-slate-800 dark:text-white">Acesse o EcoGestão</h2>
-        <p class="text-xs text-slate-500 dark:text-slate-400">Escolha seu tipo de acesso para continuar</p>
+        <h2 class="text-2xl font-black text-slate-800 dark:text-white">EcoGestão</h2>
+        <p class="text-xs text-slate-400">Acesse a plataforma de sustentabilidade escolar</p>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
         <button id="tabEstudante" onclick="selecionarAcesso('estudante')" class="p-3.5 border-2 border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 rounded-2xl font-bold text-xs flex flex-col items-center gap-1">
-          <span class="text-lg">🎓</span>
-          <span>Estudante / Escola</span>
+          <span class="text-lg">🎒</span> Estudante / Escola
         </button>
         <button id="tabAdm" onclick="selecionarAcesso('adm')" class="p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl font-bold text-xs flex flex-col items-center gap-1">
-          <span class="text-lg">🛠️</span>
-          <span>Administrador ADM</span>
+          <span class="text-lg">🛠️</span> Administração
         </button>
       </div>
 
-      <form id="formEstudante" onsubmit="loginEstudante(event)" class="space-y-3">
+      <form id="formEstudante" onsubmit="loginEstudante(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1">Seu Nome</label>
-          <input id="inputNomeEstudante" type="text" placeholder="Ex: João Silva" required class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+          <input type="text" id="inputNomeEstudante" required placeholder="Ex.: Lucas Silva" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-500 mb-1">Nome da Escola</label>
-          <input id="inputEscolaEstudante" type="text" placeholder="Ex: Escola Estadual Machado de Assis" required class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+          <input type="text" id="inputEscolaEstudante" required placeholder="Ex.: Escola Estadual José Marques" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">Turma</label>
-          <input id="inputTurmaEstudante" type="text" placeholder="Ex: 3º Ano A" required class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none focus:ring-2 focus:ring-emerald-500">
+          <label class="block text-xs font-bold text-slate-500 mb-1">Sua Turma</label>
+          <input type="text" id="inputTurmaEstudante" required placeholder="Ex.: 3º Ano A" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
         </div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-lg transition">Entrar no Painel 🚀</button>
+        <button type="submit" class="w-full py-3.5 rounded-xl btn-acao text-white font-black text-xs">
+          Entrar no EcoGestão 🚀
+        </button>
       </form>
 
-      <form id="formAdm" onsubmit="loginAdm(event)" class="space-y-3 hidden">
+      <form id="formAdm" onsubmit="loginAdm(event)" class="space-y-4 hidden">
         <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">Nome do Administrador</label>
-          <input id="inputNomeAdm" type="text" placeholder="Ex: Carlos Gestão" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none focus:ring-2 focus:ring-purple-500">
+          <label class="block text-xs font-bold text-slate-500 mb-1">Nome de Administrador</label>
+          <input type="text" id="inputNomeAdm" required placeholder="Ex.: ADM Geral" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-500 mb-1">Senha de ADM</label>
-          <input id="inputSenhaAdm" type="password" placeholder="Digite a senha de administrador" required class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none focus:ring-2 focus:ring-purple-500">
-          <p id="erroSenhaAdm" class="text-xs text-red-500 mt-1 hidden">Senha incorreta! Tente novamente.</p>
+          <label class="block text-xs font-bold text-slate-500 mb-1">Senha Master ADM</label>
+          <input type="password" id="inputSenhaAdm" required placeholder="••••••••" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
         </div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-xs shadow-lg transition">Acessar Painel ADM 🛠️</button>
+        <p id="erroSenhaAdm" class="text-xs text-red-500 font-bold hidden">Senha incorreta! Tente novamente.</p>
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-black text-xs transition">
+          Acessar Painel Master 🛠️
+        </button>
       </form>
     </div>
   </div>
 
-  <div id="mobileOverlay" onclick="toggleDrawer()" class="fixed inset-0 bg-slate-900/50 z-30 hidden md:hidden"></div>
+  <div class="flex min-h-screen">
 
-  <div class="flex-1 flex overflow-hidden">
-    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between p-4">
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-4 flex flex-col justify-between -translate-x-full md:translate-x-0">
       <div class="space-y-6">
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-2xl">🌱</span>
-            <span class="font-black text-lg tracking-tight text-emerald-600 dark:text-emerald-400">EcoGestão</span>
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">🌱</span>
+            <div>
+              <h2 class="font-black text-base text-slate-800 dark:text-white leading-tight">EcoGestão</h2>
+              <span id="lblPlanoSidebar" class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">Plano Básico</span>
+            </div>
           </div>
-          <button onclick="toggleDark()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs">🌙</button>
+          <button onclick="toggleDrawer()" class="md:hidden text-slate-400 p-1">✕</button>
         </div>
 
-        <div class="p-3.5 rounded-2xl bg-slate-100 dark:bg-slate-800 space-y-1">
-          <div class="flex items-center justify-between">
-            <span id="lblPerfilBadge" class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-200 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200">Estudante</span>
-            <span id="lblPlanoSidebar" class="inline-block text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">Plano Básico</span>
-          </div>
-          <h4 id="lblNomeUsuario" class="font-bold text-xs truncate mt-2">Carregando...</h4>
-          <p id="lblEscolaSidebar" class="text-[10px] text-slate-400 truncate">Sem Escola</p>
-        </div>
-
-        <nav class="space-y-1 text-xs font-bold">
-          <button onclick="navigate('dashboard')" data-page="dashboard" class="nav-btn nav-active w-full p-3 rounded-xl text-left flex items-center gap-3">
-            <span>📊</span> Dashboard
+        <nav class="space-y-1">
+          <button onclick="navigate('dashboard')" data-page="dashboard" class="nav-btn nav-active w-full p-3 rounded-xl text-left text-xs font-bold flex items-center gap-3">
+            <span>📊</span> Visão Geral
           </button>
-          <button onclick="navigate('indicadores')" data-page="indicadores" class="nav-btn w-full p-3 rounded-xl text-left flex items-center gap-3">
-            <span>🌱</span> Impacto Ecológico
+          <button onclick="navigate('indicadores')" data-page="indicadores" class="nav-btn w-full p-3 rounded-xl text-left text-xs font-bold flex items-center gap-3 text-slate-600 dark:text-slate-300">
+            <span>🌍</span> Impacto Ambiental
           </button>
-          <button onclick="navigate('financeiro')" data-page="financeiro" class="nav-btn area-adm hidden w-full p-3 rounded-xl text-left flex items-center gap-3">
-            <span>💰</span> Demonstrativo Financeiro
+          <button onclick="navigate('financeiro')" data-page="financeiro" class="nav-btn area-adm hidden w-full p-3 rounded-xl text-left text-xs font-bold flex items-center gap-3 text-slate-600 dark:text-slate-300">
+            <span>💰</span> Gestão Financeira
           </button>
-          <button onclick="navigate('admin')" data-page="admin" class="nav-btn area-adm hidden w-full p-3 rounded-xl text-left flex items-center gap-3">
-            <span>🛠️</span> Painel ADM
+          <button onclick="navigate('admin')" data-page="admin" class="nav-btn area-adm hidden w-full p-3 rounded-xl text-left text-xs font-bold flex items-center gap-3 text-slate-600 dark:text-slate-300">
+            <span>🛠️</span> Painel ADM Geral
           </button>
-          <button onclick="navigate('lixeira')" data-page="lixeira" class="nav-btn area-adm hidden w-full p-3 rounded-xl text-left flex items-center gap-3">
-            <span>🗑️</span> Lixeira ADM
+          <button onclick="navigate('lixeira')" data-page="lixeira" class="nav-btn area-adm hidden w-full p-3 rounded-xl text-left text-xs font-bold flex items-center gap-3 text-slate-600 dark:text-slate-300">
+            <span>🗑️</span> Lixeira
           </button>
         </nav>
       </div>
 
-      <button onclick="logout()" class="w-full p-3 rounded-xl bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 font-bold text-xs text-left flex items-center gap-2">
-        <span>🚪</span> Sair da Conta
-      </button>
+      <div class="space-y-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+        <div class="flex items-center justify-between text-xs font-bold">
+          <span class="text-slate-500">Tema</span>
+          <button onclick="toggleDark()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800">🌙/☀️</button>
+        </div>
+        <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800 space-y-1">
+          <p id="lblNomeUsuario" class="text-xs font-black text-slate-800 dark:text-white truncate">Usuário</p>
+          <p id="lblEscolaSidebar" class="text-[10px] text-slate-400 truncate">Escola</p>
+          <span id="lblPerfilBadge" class="inline-block text-[9px] font-bold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Estudante</span>
+        </div>
+        <button onclick="logout()" class="w-full py-2 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 font-bold text-xs hover:bg-red-100 transition">
+          Sair da Conta 🚪
+        </button>
+      </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6">
-      
-      <div class="md:hidden flex justify-between items-center bg-white dark:bg-slate-900 p-4 rounded-2xl border shadow-sm">
-        <button onclick="toggleDrawer()" class="text-xl">☰</button>
-        <span class="font-black text-emerald-600">EcoGestão</span>
-        <button onclick="toggleDark()" class="text-xs">🌙</button>
-      </div>
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto space-y-6">
 
-      <div id="bannerPlanoBasico" class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 hidden">
-        <div>
-          <h4 class="font-bold text-amber-800 dark:text-amber-300 text-sm">Você está utilizando o Plano Básico 💡</h4>
-          <p class="text-xs text-amber-700/80 dark:text-amber-400">Modo de visualização. Solicite o Plano Premium para liberar cadastros e interações!</p>
-        </div>
-        <button id="btnSolicitarPremium" onclick="solicitarPlanoPremium()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs transition">
-          Solicitar Premium ⭐
+      <div class="md:hidden flex items-center justify-between pb-2">
+        <button onclick="toggleDrawer()" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center gap-2">
+          <span>☰</span> Menu
         </button>
+        <span class="font-black text-xs text-white">EcoGestão</span>
       </div>
 
       <section id="page-dashboard" class="space-y-6">
-        <div>
-          <h1 class="text-2xl font-black text-slate-800 dark:text-white">Visão Geral 📊</h1>
-          <p id="lblHeaderEscola" class="text-xs text-slate-400">Carregando dados da escola...</p>
+        
+        <div class="pt-4 md:pt-6 pb-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-3 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-wider">
+              Plataforma Sustentável
+            </span>
+          </div>
+
+          <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">
+            Visão Geral 📊
+          </h1>
+
+          <p id="lblHeaderEscola" class="text-sm text-white/70 mt-1">
+            Carregando dados da escola...
+          </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border space-y-1 shadow-sm">
+        <div id="bannerPlanoBasico" class="hidden p-4 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white flex flex-col sm:flex-row justify-between items-center gap-3 shadow-md">
+          <div class="text-center sm:text-left">
+            <b class="text-sm">🔒 Sua escola está no Plano Básico</b>
+            <p class="text-xs opacity-90">Solicite o Premium para desbloquear lançamentos de coletas e funções avançadas!</p>
+          </div>
+          <button id="btnSolicitarPremium" onclick="solicitarPlanoPremium()" class="px-4 py-2 rounded-xl bg-white text-amber-700 font-black text-xs hover:bg-amber-50 transition shrink-0">
+            Solicitar Premium ⭐
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
             <span class="text-xs font-bold text-slate-400 uppercase">Total Coletado</span>
-            <p id="kpiTotalKg" class="text-2xl font-black text-emerald-600">0 kg</p>
+            <p id="kpiTotalKg" class="text-2xl sm:text-3xl font-black text-emerald-600">0 kg</p>
           </div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border space-y-1 shadow-sm">
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
             <span class="text-xs font-bold text-slate-400 uppercase">Lançamentos</span>
-            <p id="kpiParticipantes" class="text-2xl font-black text-blue-600">0</p>
+            <p id="kpiParticipantes" class="text-2xl sm:text-3xl font-black text-purple-600">0</p>
           </div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border space-y-1 shadow-sm">
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
             <span class="text-xs font-bold text-slate-400 uppercase">Turmas Ativas</span>
-            <p id="kpiTurmasCount" class="text-2xl font-black text-purple-600">0</p>
+            <p id="kpiTurmasCount" class="text-2xl sm:text-3xl font-black text-blue-600">0</p>
           </div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border space-y-1 shadow-sm">
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-1">
             <span class="text-xs font-bold text-slate-400 uppercase">Valor Estimado</span>
-            <p id="kpiValorGerado" class="text-2xl font-black text-amber-600">R$ 0,00</p>
+            <p id="kpiValorGerado" class="text-2xl sm:text-3xl font-black text-teal-600">R$ 0,00</p>
           </div>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-3 shadow-sm">
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
           <div class="flex justify-between items-center text-xs font-bold">
-            <span>Meta de Reciclagem da Escola</span>
+            <span class="text-slate-700 dark:text-slate-300">🎯 Meta da Escola (1.000 kg)</span>
             <span id="lblMetaPct" class="text-emerald-600 font-black">0%</span>
           </div>
-          <div class="progress-bar h-4">
+          <div class="progress-bar h-3">
             <div id="barMetaProgresso" class="progress-fill h-full" style="width: 0%"></div>
           </div>
-          <p class="text-[11px] text-slate-400 text-right"><span id="lblMetaAtual">0</span> / 1.000 kg atingidos</p>
+          <p class="text-[11px] text-slate-400 text-right"><span id="lblMetaAtual">0</span> / 1.000 kg reciclados</p>
         </div>
 
         <div class="grid lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-1 p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-4 shadow-sm">
-            <h3 class="font-black text-slate-800 dark:text-white flex items-center gap-2">
-              <span>♻️</span> Registrar Nova Coleta
+          <div class="lg:col-span-2 space-y-6">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="p-5 rounded-2xl border-2 border-emerald-500/30 bg-white dark:bg-slate-900 space-y-3 shadow-sm">
+                <span class="text-[10px] font-black uppercase tracking-wider text-emerald-600 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-1 rounded-md">Desafio da Semana</span>
+                <h3 id="lblDesafioSemanaTitulo" class="font-black text-sm text-slate-800 dark:text-white">Carregando...</h3>
+                <p id="lblDesafioSemanaDesc" class="text-xs text-slate-500">Aguardando informações...</p>
+              </div>
+              <div class="p-5 rounded-2xl border-2 border-purple-500/30 bg-white dark:bg-slate-900 space-y-3 shadow-sm">
+                <span class="text-[10px] font-black uppercase tracking-wider text-purple-600 bg-purple-100 dark:bg-purple-950/60 px-2 py-1 rounded-md">Próxima Ação Ecológica</span>
+                <h3 class="font-black text-sm text-slate-800 dark:text-white">Dia da Coleta Seletiva</h3>
+                <p class="text-xs text-slate-500">Mobilize sua turma para trazer plástico e papelão!</p>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+              <h3 class="font-black text-sm text-slate-800 dark:text-white">📈 Progresso Semanal de Coletas</h3>
+              <div class="h-64">
+                <canvas id="chartDashboard"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+            <h3 class="font-black text-sm text-slate-800 dark:text-white flex items-center gap-2">
+              <span>♻️</span> <span>Registrar Nova Coleta</span>
             </h3>
+
             <form id="formLancarColeta" onsubmit="salvarColeta(event)" class="space-y-3">
               <div>
-                <label class="block text-xs font-bold text-slate-500 mb-1">Turma Responsável</label>
-                <input id="inputTurmaColeta" type="text" placeholder="Ex: 3º Ano B" required class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none">
+                <label class="block text-xs font-bold text-slate-500 mb-1">Turma</label>
+                <input type="text" id="inputTurmaColeta" placeholder="Ex.: 3º Ano A" class="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
               </div>
               <div>
                 <label class="block text-xs font-bold text-slate-500 mb-1">Tipo de Material</label>
-                <select id="selectTipoColeta" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none font-bold">
+                <select id="selectTipoColeta" class="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
                   <option value="Plástico">Plástico</option>
                   <option value="Papel/Papelão">Papel / Papelão</option>
                   <option value="Metal">Metal</option>
                   <option value="Vidro">Vidro</option>
+                  <option value="Sachês de Ketchup/Molhos">Sachês de Molhos</option>
                   <option value="Embalagens de Salgados/Biscoitos">Embalagens de Salgados</option>
-                  <option value="Guardanapos/Lenços de Papel">Guardanapos / Papel</option>
-                  <option value="Sachês de Ketchup/Molhos">Sachês de Ketchup / Molhos</option>
+                  <option value="Guardanapos/Lenços de Papel">Guardanapos de Papel</option>
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-500 mb-1">Peso Coletado (kg)</label>
-                <input id="inputKgColeta" type="number" step="0.1" placeholder="Ex: 12.5" required class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs outline-none">
+                <label class="block text-xs font-bold text-slate-500 mb-1">Quantidade (kg)</label>
+                <input type="number" step="0.1" id="inputKgColeta" placeholder="Ex.: 12.5" class="w-full p-2.5 rounded-xl border bg-slate-50 dark:bg-slate-800 text-xs font-bold outline-none">
               </div>
-              <button type="submit" class="btn-acao w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs transition">
-                Salvar Registro 🚀
+              <button type="submit" class="w-full py-3 rounded-xl btn-acao text-white font-black text-xs">
+                Salvar Coleta 🚀
               </button>
             </form>
-          </div>
 
-          <div class="lg:col-span-2 space-y-4">
-            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-4 shadow-sm">
-              <h3 class="font-black text-slate-800 dark:text-white">Evolução dos Lançamentos</h3>
-              <div class="h-48">
-                <canvas id="chartDashboard"></canvas>
-              </div>
-            </div>
-
-            <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-3 shadow-sm">
-              <h3 class="font-black text-slate-800 dark:text-white">Últimas Coletas Registradas</h3>
+            <div class="pt-4 border-t space-y-2">
+              <h4 class="text-xs font-bold text-slate-400 uppercase">Últimos Lançamentos</h4>
               <div id="listaHistoricoColetas" class="space-y-2 text-xs"></div>
             </div>
           </div>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-4 shadow-sm">
-          <h3 class="font-black text-slate-800 dark:text-white flex items-center gap-2">
-            <span>🏆</span> Ranking Escolar das Turmas
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-4">
+          <h3 class="font-black text-sm text-slate-800 dark:text-white flex items-center gap-2">
+            <span>🏆</span> <span>Ranking Geral das Turmas</span>
           </h3>
           <div id="containerRanking" class="space-y-3"></div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-emerald-500/30 space-y-3 shadow-sm">
-            <span class="text-[10px] font-black uppercase tracking-wider text-emerald-600">Desafio Semanal</span>
-            <h3 id="lblDesafioSemanaTitulo" class="text-lg font-black">Nenhum Desafio Semanal</h3>
-            <p id="lblDesafioSemanaDesc" class="text-xs text-slate-500">Aguardando definição do ADM.</p>
-            <div class="pt-2 flex justify-between items-center text-xs font-bold text-emerald-600">
-              <span>Recompensa: +150 Pontos Eco</span>
-              <button onclick="showToast('Desafio aceito!', 'success')" class="btn-desafio-acao px-3 py-1.5 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">Participar</button>
-            </div>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-purple-500/30 space-y-3 shadow-sm">
-            <span class="text-[10px] font-black uppercase tracking-wider text-purple-600">Desafio Mensal</span>
-            <h3 id="lblDesafioMesTitulo" class="text-lg font-black">Escola Circular</h3>
-            <p id="lblDesafioMesDesc" class="text-xs text-slate-500">Recicle e ajude a escola a atingir as metas ecológicas.</p>
-            <div class="pt-2 flex justify-between items-center text-xs font-bold text-purple-600">
-              <span>Recompensa: Troféu Digital</span>
-              <button onclick="showToast('Desafio mensal ativo!', 'info')" class="btn-desafio-acao px-3 py-1.5 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300">Ver Status</button>
-            </div>
-          </div>
         </div>
       </section>
 
       <section id="page-indicadores" class="hidden space-y-6">
         <div>
-          <h2 class="text-2xl font-black text-slate-800 dark:text-white">Impacto & Indicadores Ecológicos 📊</h2>
-          <p class="text-sm text-slate-500">Métricas calculadas a partir das coletas reais.</p>
+          <h2 class="text-2xl font-black text-slate-800 dark:text-white">Impacto Ambiental Reciclado 🌍</h2>
+          <p class="text-sm text-slate-500">Estimativas de recursos preservados através da reciclagem.</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-4">
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
-            <span class="text-xs font-bold text-slate-400 uppercase">Volume Acumulado</span>
-            <p id="lblIndTotalKg" class="text-3xl font-black text-slate-800 dark:text-white mt-1">0 kg</p>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+            <span class="text-3xl">🌳</span>
+            <p id="lblArvoresSalvas" class="text-3xl font-black text-emerald-600">0</p>
+            <p class="text-xs font-bold text-slate-600 dark:text-slate-300">Árvores Preservadas</p>
           </div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
-            <span class="text-xs font-bold text-slate-400 uppercase">Lançamentos</span>
-            <p id="lblIndLancamentos" class="text-3xl font-black text-emerald-600 mt-1">0</p>
+          <div class="p-5 rounded-2xl bg-blue-500/10 border border-blue-500/30 space-y-2">
+            <span class="text-3xl">💧</span>
+            <p id="lblAguaEconomizada" class="text-3xl font-black text-blue-600">0 L</p>
+            <p class="text-xs font-bold text-slate-600 dark:text-slate-300">Água Economizada</p>
           </div>
-          <div class="p-4 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
-            <span class="text-xs font-bold text-slate-400 uppercase">Meta Global</span>
-            <p class="text-3xl font-black text-purple-600 mt-1">1.000 kg</p>
-          </div>
-        </div>
-
-        <div class="p-5 rounded-2xl bg-gradient-to-br from-emerald-950/10 to-teal-950/10 border border-emerald-500/20 space-y-4 shadow-sm">
-          <h3 class="font-black text-slate-800 dark:text-white flex items-center gap-2">
-            <span>🌱</span> <span>Calculadora de Impacto Preservado</span>
-          </h3>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="p-4 rounded-2xl bg-white/60 dark:bg-slate-800/60 border border-emerald-500/20 text-center">
-              <span class="text-2xl">🌳</span>
-              <p class="text-2xl font-black text-emerald-600 mt-1" id="lblArvoresSalvas">0</p>
-              <p class="text-xs font-bold text-slate-500">Árvores Salvas</p>
-            </div>
-            <div class="p-4 rounded-2xl bg-white/60 dark:bg-slate-800/60 border border-emerald-500/20 text-center">
-              <span class="text-2xl">💧</span>
-              <p class="text-2xl font-black text-blue-600 mt-1" id="lblAguaEconomizada">0 L</p>
-              <p class="text-xs font-bold text-slate-500">Água Economizada</p>
-            </div>
-            <div class="p-4 rounded-2xl bg-white/60 dark:bg-slate-800/60 border border-emerald-500/20 text-center">
-              <span class="text-2xl">💨</span>
-              <p class="text-2xl font-black text-purple-600 mt-1" id="lblCo2Evitado">0 kg</p>
-              <p class="text-xs font-bold text-slate-500">CO₂ Evitado</p>
-            </div>
+          <div class="p-5 rounded-2xl bg-purple-500/10 border border-purple-500/30 space-y-2">
+            <span class="text-3xl">💨</span>
+            <p id="lblCo2Evitado" class="text-3xl font-black text-purple-600">0 kg</p>
+            <p class="text-xs font-bold text-slate-600 dark:text-slate-300">CO₂ Evitado na Atmosfera</p>
           </div>
         </div>
 
-        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-4 shadow-sm">
-          <h3 class="font-black text-slate-800 dark:text-white">Composição por Tipo de Material</h3>
-          <div class="h-64">
-            <canvas id="chartMateriais"></canvas>
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-4">
+            <h3 class="font-black text-sm text-slate-800 dark:text-white">📊 Distribuição por Tipo de Material</h3>
+            <div class="h-64">
+              <canvas id="chartMateriais"></canvas>
+            </div>
+          </div>
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border space-y-4">
+            <h3 class="font-black text-sm text-slate-800 dark:text-white">📋 Resumo das Métricas Ecológicas</h3>
+            <div class="space-y-3 text-xs">
+              <div class="flex justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+                <span>Total de Resíduos Processados</span>
+                <b id="lblIndTotalKg" class="text-emerald-600">0 kg</b>
+              </div>
+              <div class="flex justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+                <span>Registros Efetuados</span>
+                <b id="lblIndLancamentos" class="text-purple-600">0</b>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <section id="page-financeiro" class="hidden space-y-6">
         <div>
-          <h2 class="text-2xl font-black text-slate-800 dark:text-white">Demonstrativo Financeiro 💰</h2>
-          <p class="text-sm text-slate-500">Estimativas financeiras baseadas nos valores por material.</p>
+          <h2 class="text-2xl font-black text-slate-800 dark:text-white">Gestão Financeira 💰</h2>
+          <p class="text-sm text-slate-500">Estimativa de receita gerada com a venda de materiais recicláveis.</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 gap-6">
           <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
-            <span class="text-xs font-bold text-slate-400 uppercase">Venda de Recicláveis</span>
-            <p id="lblFinVenda" class="text-3xl font-black text-slate-800 dark:text-white mt-2">R$ 0,00</p>
+            <span class="text-xs font-bold text-slate-400 uppercase">Receita Estimada de Vendas</span>
+            <p id="lblFinVenda" class="text-3xl font-black text-emerald-600 mt-2">R$ 0,00</p>
           </div>
-          <div class="p-5 rounded-2xl          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border shadow-sm">
             <span class="text-xs font-bold text-slate-400 uppercase">Parcerias e Apoio</span>
             <p class="text-3xl font-black text-purple-600 mt-2">R$ 0,00</p>
           </div>
-          <div class="p-5 rounded-2xl border-2 border-emerald-500/50 bg-emerald-50/20 shadow-sm">
+          <div class="p-5 rounded-2xl border-2 border-emerald-500/50 bg-emerald-50/20 shadow-sm md:col-span-2">
             <span class="text-xs font-bold text-emerald-700 uppercase">Receita Total Gerada</span>
             <p id="lblFinTotal" class="text-3xl font-black text-emerald-600 mt-2">R$ 0,00</p>
           </div>
@@ -565,7 +978,6 @@
     window.loginEstudante = function(e) {
       if (e) e.preventDefault();
       const nomeEscola = document.getElementById('inputEscolaEstudante').value.trim() || 'Escola Sem Nome';
-      
       window.state.usuario = document.getElementById('inputNomeEstudante').value.trim() || 'Estudante';
       window.state.escola = nomeEscola;
       window.state.turma = document.getElementById('inputTurmaEstudante').value.trim() || 'Sem Turma';
