@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoGestão - Transformando resíduos em oportunidades</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ecoGreen: '#16A34A',
+            ecoDarkGreen: '#166534',
+            ecoTeal: '#0F766E',
+            ecoAmber: '#F59E0B',
+            ecoBg: '#F8FAFC',
+            ecoText: '#1E293B'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #F8FAFC; color: #1E293B; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <div id="welcome-screen" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-3xl p-6 md:p-8 shadow-2xl space-y-6">
+      <div class="text-center">
+        <div class="bg-emerald-100 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">🌱</div>
+        <h2 class="text-2xl font-bold text-slate-800">Bem-vindo ao EcoGestão!</h2>
+        <p class="text-xs text-slate-500 mt-1">Identifique-se para acessar a plataforma da sua escola.</p>
+      </div>
+
+      <form onsubmit="concluirOnboarding(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Seu Nome</label>
+          <input type="text" id="userName" required placeholder="Ex: Lucas Silva" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-ecoGreen outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Sua Turma</label>
+          <input type="text" id="userClass" required placeholder="Ex: 2º Ano A" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-ecoGreen outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nome da Escola</label>
+          <input type="text" id="userSchool" required placeholder="Ex: Escola Premium" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-ecoGreen outline-none">
+          <p class="text-[10px] text-slate-400 mt-1">Dica: Digite "Escola Premium" para testar com o plano liberado.</p>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-ecoGreen text-white font-bold text-sm rounded-xl hover:bg-emerald-700 transition">
+          Acessar Plataforma 🚀
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="flex flex-col md:flex-row min-h-screen">
+    
+    <aside class="w-full md:w-64 bg-white border-r border-slate-200 flex flex-col justify-between p-4 shrink-0">
+      <div>
+        <div class="flex items-center space-x-3 mb-6 px-2 pt-2">
+          <div class="bg-ecoGreen/10 p-2 rounded-xl text-2xl">🌱</div>
+          <div>
+            <h1 class="text-xl font-bold text-ecoDarkGreen tracking-tight">EcoGestão</h1>
+            <p class="text-xs text-slate-500" id="displaySchoolName">Escola...</p>
+          </div>
+        </div>
+
+        <div id="badgePlano" class="mb-4 p-2.5 rounded-xl text-xs font-bold flex items-center justify-between bg-slate-100 text-slate-700">
+          <span>Plano Atual:</span>
+          <span id="planoStatusText" class="px-2 py-0.5 rounded-md bg-slate-200">Básico</span>
+        </div>
+
+        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl mb-6 text-xs text-emerald-800">
+          🌎 Sua escola já deu destino correto a <strong>850 kg</strong> de materiais!
+        </div>
+
+        <nav class="space-y-1">
+          <button onclick="navigate('dashboard')" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition text-ecoGreen bg-emerald-50" id="btn-dashboard">
+            <span>🏠</span> <span>Início</span>
+          </button>
+          <button onclick="navigate('coletas')" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-600 hover:bg-slate-50" id="btn-coletas">
+            <span>♻️</span> <span>Coletas</span>
+          </button>
+          <button onclick="navigate('ranking')" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-600 hover:bg-slate-50" id="btn-ranking">
+            <span>🏆</span> <span>Ranking</span>
+          </button>
+          
+          <button onclick="navigate('desafios')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-600 hover:bg-slate-50" id="btn-desafios">
+            <div class="flex items-center space-x-3"><span>🎯</span> <span>Desafios</span></div>
+            <span class="premium-lock hidden text-xs">🔒</span>
+          </button>
+          <button onclick="navigate('financeiro')" class="nav-btn w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-600 hover:bg-slate-50" id="btn-financeiro">
+            <div class="flex items-center space-x-3"><span>💰</span> <span>Financeiro</span></div>
+            <span class="premium-lock hidden text-xs">🔒</span>
+          </button>
+
+          <button onclick="navigate('admin')" class="nav-btn w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-600 hover:bg-slate-50 mt-4 border-t border-slate-100 pt-3" id="btn-admin">
+            <span>🔒</span> <span>Área Restrita</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="mt-8 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center">
+        EcoGestão v1.0 • OBNE 2026
+      </div>
+    </aside>
+
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+
+      <section id="page-dashboard" class="space-y-6">
+        <header>
+          <h2 class="text-2xl font-bold text-slate-800">Olá, <span id="displayUserName">Estudante</span>! 👋</h2>
+          <p class="text-slate-500 text-sm">Acompanhe o impacto sustentável da <span id="displaySchoolHeader" class="font-semibold text-slate-700">sua escola</span>.</p>
+        </header>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <div class="text-2xl mb-1">♻️</div>
+            <div class="text-2xl font-extrabold text-slate-800">850 kg</div>
+            <div class="text-xs text-slate-500 font-medium mt-1">Materiais coletados</div>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <div class="text-2xl mb-1">👥</div>
+            <div class="text-2xl font-extrabold text-slate-800">247</div>
+            <div class="text-xs text-slate-500 font-medium mt-1">Estudantes ativos</div>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <div class="text-2xl mb-1">🏆</div>
+            <div class="text-2xl font-extrabold text-slate-800">8</div>
+            <div class="text-xs text-slate-500 font-medium mt-1">Turmas engajadas</div>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <div class="text-2xl mb-1">💰</div>
+            <div class="text-2xl font-extrabold text-slate-800">R$ 480</div>
+            <div class="text-xs text-slate-500 font-medium mt-1">Valor gerado</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+            <h3 class="font-bold text-slate-800 mb-4">Evolução da Coleta (kg)</h3>
+            <div class="h-64">
+              <canvas id="chartDashboard"></canvas>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+            <div>
+              <span class="inline-block px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full mb-3">🎯 Desafio Ativo</span>
+              <h3 class="font-bold text-slate-800 text-lg mb-1">Missão 100 kg</h3>
+              <p class="text-xs text-slate-500 mb-4">Meta do mês para toda a escola</p>
+
+              <div class="space-y-2">
+                <div class="flex justify-between text-xs font-bold">
+                  <span>Progresso</span>
+                  <span>82%</span>
+                </div>
+                <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                  <div class="bg-ecoAmber h-full rounded-full" style="width: 82%"></div>
+                </div>
+                <p class="text-xs text-slate-500 text-right">82 kg de 100 kg • Faltam 18 kg</p>
+              </div>
+            </div>
+
+            <button onclick="navigate('desafios')" class="w-full mt-6 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition">
+              Ver detalhes do desafio →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-coletas" class="hidden space-y-6 max-w-2xl mx-auto">
+        <header>
+          <h2 class="text-2xl font-bold text-slate-800">Registrar Nova Coleta</h2>
+          <p class="text-slate-500 text-sm">Insira os dados do lote reciclável para atualizar os pontos.</p>
+        </header>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+          <form id="formColeta" onsubmit="salvarColeta(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Turma</label>
+              <select required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ecoGreen">
+                <option value="">Selecione a turma...</option>
+                <option value="2A">2º Ano A</option>
+                <option value="1B">1º Ano B</option>
+                <option value="3A">3º Ano A</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Material</label>
+              <select required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ecoGreen">
+                <option value="">Selecione o tipo de material...</option>
+                <option value="plastico">Plástico</option>
+                <option value="papel">Papel / Papelão</option>
+                <option value="metal">Metal / Alumínio</option>
+                <option value="vidro">Vidro</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Quantidade (kg)</label>
+                <input type="number" step="0.1" required placeholder="Ex: 25.0" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ecoGreen">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Data</label>
+                <input type="date" required value="2026-08-09" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ecoGreen">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Destino</label>
+              <select required class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ecoGreen">
+                <option value="cooperativa">Cooperativa Parceira</option>
+                <option value="reciclador">Reciclador Local</option>
+              </select>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-ecoGreen text-white font-bold text-sm rounded-xl hover:bg-emerald-700 transition">
+              🟢 Registrar Coleta
+            </button>
+          </form>
+
+          <div id="msgSucesso" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-sm font-medium">
+            ✅ Coleta registrada com sucesso! Dados atualizados no sistema.
+          </div>
+        </div>
+      </section>
+
+      <section id="page-ranking" class="hidden space-y-6">
+        <header>
+          <h2 class="text-2xl font-bold text-slate-800">Ranking das Turmas 🏆</h2>
+          <p class="text-slate-500 text-sm">Classificação baseada em volume descartado corretamente e engajamento.</p>
+        </header>
+
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-xs text-slate-500 uppercase tracking-wider">
+                <th class="p-4">Posição</th>
+                <th class="p-4">Turma</th>
+                <th class="p-4">Pontuação</th>
+                <th class="p-4">Total Coletado</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-sm">
+              <tr class="bg-amber-50/40">
+                <td class="p-4 font-bold text-lg">🥇 1º</td>
+                <td class="p-4 font-bold text-slate-800">2º Ano A</td>
+                <td class="p-4 font-bold text-ecoAmber">1.250 pts</td>
+                <td class="p-4 text-slate-600">320 kg</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-bold text-lg">🥈 2º</td>
+                <td class="p-4 font-bold text-slate-800">1º Ano B</td>
+                <td class="p-4 font-bold text-slate-600">1.080 pts</td>
+                <td class="p-4 text-slate-600">270 kg</td>
+              </tr>
+              <tr>
+                <td class="p-4 font-bold text-lg">🥉 3º</td>
+                <td class="p-4 font-bold text-slate-800">3º Ano A</td>
+                <td class="p-4 font-bold text-slate-600">940 pts</td>
+                <td class="p-4 text-slate-600">210 kg</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="page-desafios" class="hidden space-y-6">
+        <header>
+          <h2 class="text-2xl font-bold text-slate-800">Desafios & Gamificação 🎯</h2>
+          <p class="text-slate-500 text-sm">Cumpra missões para desbloquear selos de sustentabilidade.</p>
+        </header>
+
+        <div class="premium-required-notice hidden bg-amber-50 border border-amber-200 p-6 rounded-2xl text-center">
+          <div class="text-4xl mb-2">🔒</div>
+          <h3 class="text-lg font-bold text-amber-900">Função do Plano Premium</h3>
+          <p class="text-sm text-amber-700 mt-1 max-w-md mx-auto">Sua escola está no Plano Básico. Peça à direção da escola para assinar o Plano Premium (R$ 49,99/mês) para liberar os desafios e insígnias.</p>
+        </div>
+
+        <div class="premium-content grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <div class="text-3xl mb-2">🏅</div>
+            <h4 class="font-bold text-slate-800">Primeiros 100 kg</h4>
+            <p class="text-xs text-slate-500 mt-1">Conquistado pela escola no primeiro ciclo.</p>
+            <span class="inline-block mt-3 px-2 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded">Desbloqueado</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <div class="text-3xl mb-2">🏅</div>
+            <h4 class="font-bold text-slate-800">500 kg Reciclados</h4>
+            <p class="text-xs text-slate-500 mt-1">Alcançado com a colaboração das turmas do ensino médio.</p>
+            <span class="inline-block mt-3 px-2 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded">Desbloqueado</span>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm opacity-60">
+            <div class="text-3xl mb-2">🔒</div>
+            <h4 class="font-bold text-slate-800">1 Tonelada Ambiental</h4>
+            <p class="text-xs text-slate-500 mt-1">Faltam apenas 150 kg para liberar o selo ouro.</p>
+            <span class="inline-block mt-3 px-2 py-0.5 bg-slate-100 text-slate-600 text-xs font-bold rounded">Em andamento (85%)</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-financeiro" class="hidden space-y-6">
+        <header>
+          <h2 class="text-2xl font-bold text-slate-800">Resultado Financeiro 💰</h2>
+          <p class="text-slate-500 text-sm">Transparência dos recursos arrecadados com a venda dos resíduos.</p>
+        </header>
+
+        <div class="premium-required-notice hidden bg-amber-50 border border-amber-200 p-6 rounded-2xl text-center">
+          <div class="text-4xl mb-2">🔒</div>
+          <h3 class="text-lg font-bold text-amber-900">Função do Plano Premium</h3>
+          <p class="text-sm text-amber-700 mt-1 max-w-md mx-auto">Sua escola está no Plano Básico. Peça à direção da escola para assinar o Plano Premium (R$ 49,99/mês) para ter acesso completo aos dados financeiros.</p>
+        </div>
+
+        <div class="premium-content grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Receita Acumulada Total</p>
+            <p class="text-3xl font-extrabold text-ecoTeal mt-1">R$ 480,00</p>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Venda de Materiais</p>
+            <p class="text-2xl font-bold text-slate-800 mt-1">R$ 320,00</p>
+          </div>
+          <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+            <p class="text-xs text-slate-500 font-medium">Patrocínios / Parcerias</p>
+            <p class="text-2xl font-bold text-slate-800 mt-1">R$ 160,00</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-admin" class="hidden space-y-6">
+        
+        <div id="admin-login" class="max-w-md mx-auto bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+          <div class="text-center">
+            <div class="text-3xl mb-2">🔑</div>
+            <h3 class="text-xl font-bold text-slate-800">Acesso Restrito</h3>
+            <p class="text-xs text-slate-500">Digite a senha do administrador para continuar.</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Senha de Acesso</label>
+            <input type="password" id="senhaInput" placeholder="Sua senha..." class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ecoGreen">
+          </div>
+
+          <button onclick="autenticarAdmin()" class="w-full py-3 bg-slate-900 text-white font-bold text-sm rounded-xl hover:bg-slate-800 transition">
+            Entrar no Painel
+          </button>
+
+          <p id="loginErro" class="hidden text-xs text-red-500 text-center font-bold">
+            ❌ Senha incorreta! Tente novamente.
+          </p>
+        </div>
+
+        <div id="admin-panel" class="hidden space-y-6">
+          <div class="flex justify-between items-center bg-slate-900 text-white p-4 rounded-2xl">
+            <div>
+              <h3 class="font-bold">Painel de Gerenciamento VIP</h3>
+              <p class="text-xs text-slate-400">Sessão protegida por senha</p>
+            </div>
+            <button onclick="sairAdmin()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs rounded-lg transition">Sair</button>
+          </div>
+
+          <div class="bg-gradient-to-r from-emerald-900 to-teal-900 text-white p-6 rounded-2xl shadow-md space-y-4">
+            <div class="flex flex-col md:flex-row justify-between md:items-center gap-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-300">Gestão de Assinatura</span>
+                <h4 class="text-xl font-extrabold mt-1">Plano da Escola: <span id="adminSchoolName">Escola</span></h4>
+                <p class="text-xs text-emerald-100/70 mt-1">Altere o status do plano para liberar ou restringir recursos avançados para todos os alunos desta escola.</p>
+              </div>
+
+              <div class="bg-white/10 backdrop-blur-md p-3 rounded-xl border border-white/20 flex items-center space-x-3">
+                <button onclick="alterarPlano(false)" id="btnPlanoBasico" class="px-3 py-1.5 rounded-lg text-xs font-bold transition">Básico (Grátis)</button>
+                <button onclick="alterarPlano(true)" id="btnPlanoPremium" class="px-3 py-1.5 rounded-lg text-xs font-bold transition">Premium (R$ 49,99/mês)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+              <h4 class="font-bold text-slate-800">➕ Criar Novo Desafio</h4>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Título do Desafio</label>
+                <input type="text" placeholder="Ex: Semana do Plástico" class="w-full p-2.5 border border-slate-200 rounded-lg text-sm">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Meta em kg</label>
+                <input type="number" placeholder="200" class="w-full p-2.5 border border-slate-200 rounded-lg text-sm">
+              </div>
+              <button class="w-full py-2.5 bg-ecoGreen text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition">
+                Publicar Desafio
+              </button>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+              <h4 class="font-bold text-slate-800">⚙️ Configurações de Preço por Kg</h4>
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-slate-600">Plástico (R$/kg)</label>
+                  <input type="text" value="R$ 1,20" class="w-full p-2 border border-slate-200 rounded-lg text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-600">Papel (R$/kg)</label>
+                  <input type="text" value="R$ 0,50" class="w-full p-2 border border-slate-200 rounded-lg text-sm">
+                </div>
+              </div>
+              <button class="w-full py-2.5 bg-ecoTeal text-white text-xs font-bold rounded-lg hover:bg-teal-800 transition">
+                Salvar Configurações
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // ESTADO DO USUÁRIO E DA ESCOLA
+    let usuarioAtual = {
+      nome: '',
+      turma: '',
+      escola: '',
+      isPremium: false
+    };
+
+    // Concluir tela de onboarding
+    function concluirOnboarding(e) {
+      e.preventDefault();
+      usuarioAtual.nome = document.getElementById('userName').value.trim();
+      usuarioAtual.turma = document.getElementById('userClass').value.trim();
+      usuarioAtual.escola = document.getElementById('userSchool').value.trim();
+
+      // Regra de verificação: se o nome da escola for "Escola Premium" (ignorando maiúsculas/minúsculas)
+      usuarioAtual.isPremium = usuarioAtual.escola.toLowerCase().includes('premium');
+
+      // Atualiza textos na interface
+      document.getElementById('displayUserName').innerText = usuarioAtual.nome;
+      document.getElementById('displaySchoolName').innerText = usuarioAtual.escola;
+      document.getElementById('displaySchoolHeader').innerText = usuarioAtual.escola;
+      document.getElementById('adminSchoolName').innerText = usuarioAtual.escola;
+
+      // Oculta tela de boas-vindas
+      document.getElementById('welcome-screen').classList.add('hidden');
+
+      // Aplica regras do plano
+      atualizarInterfacePlano();
+    }
+
+    // Altera o plano no Admin
+    function alterarPlano(statusPremium) {
+      usuarioAtual.isPremium = statusPremium;
+      atualizarInterfacePlano();
+    }
+
+    // Atualiza a visibilidade das funções baseada no plano
+    function atualizarInterfacePlano() {
+      const badge = document.getElementById('badgePlano');
+      const statusText = document.getElementById('planoStatusText');
+      const btnBasico = document.getElementById('btnPlanoBasico');
+      const btnPremium = document.getElementById('btnPlanoPremium');
+
+      const locks = document.querySelectorAll('.premium-lock');
+      const notices = document.querySelectorAll('.premium-required-notice');
+      const contents = document.querySelectorAll('.premium-content');
+
+      if (usuarioAtual.isPremium) {
+        // Estilo Badge
+        badge.className = "mb-4 p-2.5 rounded-xl text-xs font-bold flex items-center justify-between bg-amber-50 text-amber-900 border border-amber-200";
+        statusText.innerText = "Premium ⭐";
+        statusText.className = "px-2 py-0.5 rounded-md bg-amber-200 text-amber-900 font-extrabold";
+
+        // Estilo Botoes Admin
+        btnBasico.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white/10 text-white hover:bg-white/20";
+        btnPremium.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-amber-400 text-slate-900 shadow-md";
+
+        // Esconde cadeados e avisos, mostra conteúdos
+        locks.forEach(el => el.classList.add('hidden'));
+        notices.forEach(el => el.classList.add('hidden'));
+        contents.forEach(el => el.classList.remove('hidden'));
+      } else {
+        // Estilo Badge
+        badge.className = "mb-4 p-2.5 rounded-xl text-xs font-bold flex items-center justify-between bg-slate-100 text-slate-700";
+        statusText.innerText = "Básico (Grátis)";
+        statusText.className = "px-2 py-0.5 rounded-md bg-slate-200 text-slate-700";
+
+        // Estilo Botoes Admin
+        btnBasico.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white text-slate-900 shadow-md";
+        btnPremium.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white/10 text-white hover:bg-white/20";
+
+        // Exibe cadeados e avisos, oculta conteúdos restritos
+        locks.forEach(el => el.classList.remove('hidden'));
+        notices.forEach(el => el.classList.remove('hidden'));
+        contents.forEach(el => el.classList.add('hidden'));
+      }
+    }
+
+    // Navegação entre abas
+    function navigate(pageId) {
+      const pages = ['dashboard', 'coletas', 'ranking', 'desafios', 'financeiro', 'admin'];
+      pages.forEach(id => {
+        document.getElementById(`page-${id}`).classList.add('hidden');
+        const btn = document.getElementById(`btn-${id}`);
+        if(btn) {
+          btn.classList.remove('bg-emerald-50', 'text-ecoGreen');
+          btn.classList.add('text-slate-600');
+        }
+      });
+
+      document.getElementById(`page-${pageId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`btn-${pageId}`);
+      if(activeBtn) {
+        activeBtn.classList.add('bg-emerald-50', 'text-ecoGreen');
+        activeBtn.classList.remove('text-slate-600');
+      }
+    }
+
+    // Autenticação da área restrita
+    function autenticarAdmin() {
+      const senha = document.getElementById('senhaInput').value;
+      if (senha === 'reciclagem2026') {
+        document.getElementById('admin-login').classList.add('hidden');
+        document.getElementById('admin-panel').classList.remove('hidden');
+        document.getElementById('loginErro').classList.add('hidden');
+      } else {
+        document.getElementById('loginErro').classList.remove('hidden');
+      }
+    }
+
+    function sairAdmin() {
+      document.getElementById('senhaInput').value = '';
+      document.getElementById('admin-panel').classList.add('hidden');
+      document.getElementById('admin-login').classList.remove('hidden');
+    }
+
+    // Formulário de coleta simulado
+    function salvarColeta(e) {
+      e.preventDefault();
+      document.getElementById('msgSucesso').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('msgSucesso').classList.add('hidden');
+        document.getElementById('formColeta').reset();
+      }, 3000);
+    }
+
+    // Inicialização do Gráfico Chart.js no Dashboard
+    window.onload = function() {
+      const ctx = document.getElementById('chartDashboard').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Mai', 'Jun', 'Jul', 'Ago'],
+          datasets: [{
+            label: 'Kg Coletados',
+            data: [100, 300, 500, 850],
+            borderColor: '#16A34A',
+            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+            fill: true,
+            tension: 0.3,
+            borderWidth: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
