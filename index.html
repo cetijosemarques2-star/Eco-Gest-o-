@@ -79,7 +79,7 @@
       <div class="text-center space-y-2">
         <div class="w-16 h-16 mx-auto rounded-2xl app-gradient flex items-center justify-center text-3xl shadow-lg">♻️</div>
         <h1 class="text-2xl font-black tracking-tight text-slate-800 dark:text-white">EcoGestão 3.1</h1>
-        <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Sistema em Tempo Real</p>
+        <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400">Sistema Escolar Inteligente</p>
       </div>
 
       <div>
@@ -89,7 +89,7 @@
             <span class="text-2xl mb-1">🧑‍🎓</span> <span>Estudante</span>
           </button>
           <button type="button" id="tabAdm" onclick="selecionarAcesso('adm')" class="p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl text-left font-bold text-xs flex flex-col justify-between">
-            <span class="text-2xl mb-1">🔐</span> <span>ADM Geral / Escola</span>
+            <span class="text-2xl mb-1">🔐</span> <span>ADM Geral</span>
           </button>
         </div>
       </div>
@@ -101,7 +101,7 @@
         </div>
         <div>
           <label class="block text-xs font-bold mb-1">Nome da Escola</label>
-          <input type="text" id="inputEscolaEstudante" required placeholder="Ex.: Escola Modelo" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+          <input type="text" id="inputEscolaEstudante" required placeholder="Ex.: CETI José Marques" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold mb-1">Turma</label>
@@ -113,14 +113,14 @@
       <form id="formAdm" onsubmit="loginAdm(event)" class="space-y-3 hidden">
         <div>
           <label class="block text-xs font-bold mb-1">Nome / Cargo ADM</label>
-          <input type="text" id="inputNomeAdm" required placeholder="Ex.: Gestão Administrativa" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+          <input type="text" id="inputNomeAdm" required placeholder="Ex.: Gestor Geral" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold mb-1">Senha ADM</label>
           <input type="password" id="inputSenhaAdm" required placeholder="Digite a senha ADM" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
         </div>
         <p id="erroSenhaAdm" class="text-xs text-red-500 font-bold hidden">⚠️ Senha incorreta. Tente novamente.</p>
-        <button type="submit" class="w-full py-3.5 btn-gradient rounded-xl text-sm">Entrar como ADM 🔐</button>
+        <button type="submit" class="w-full py-3.5 btn-gradient rounded-xl text-sm">Entrar no Painel ADM 🔐</button>
       </form>
     </div>
   </div>
@@ -151,7 +151,7 @@
           <button onclick="navigate('dashboard')" class="nav-btn nav-active w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold" data-page="dashboard">
             <span>🏠</span> <span>Início</span>
           </button>
-          <button id="btnNavColetas" onclick="navigate('coletas')" class="nav-btn area-adm w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold hidden" data-page="coletas">
+          <button onclick="navigate('coletas')" class="nav-btn w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold" data-page="coletas">
             <span>♻️</span> <span>Lançar Coleta</span>
           </button>
           <button onclick="navigate('ranking')" class="nav-btn w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold" data-page="ranking">
@@ -163,6 +163,7 @@
           <button onclick="navigate('indicadores')" class="nav-btn w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold" data-page="indicadores">
             <span>📊</span> <span>Impacto Real</span>
           </button>
+          
           <button id="btnNavFinanceiro" onclick="navigate('financeiro')" class="nav-btn area-adm w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold hidden" data-page="financeiro">
             <span>💰</span> <span>Financeiro</span>
           </button>
@@ -218,7 +219,7 @@
               <div>
                 <span class="text-xs font-bold text-amber-600 uppercase">Seu Nível de Engajamento</span>
                 <h3 class="text-xl font-black text-slate-800 dark:text-white" id="lblNivelUsuario">Iniciante Ecológico</h3>
-                <p class="text-xs text-slate-500">Pontuação Total: <b id="lblPontosUsuario" class="text-emerald-600">0 Pontos Eco</b></p>
+                <p class="text-xs text-slate-500">Escola: <b id="lblEscolaUserCard" class="text-emerald-600">-</b></p>
               </div>
             </div>
             <div class="flex items-center gap-2">
@@ -231,12 +232,12 @@
           <div class="flex items-center gap-3">
             <span class="text-2xl">⚡</span>
             <div>
-              <h4 class="font-extrabold text-sm text-slate-800 dark:text-white">Plano Básico (Modo Consulta Ativo)</h4>
-              <p class="text-xs text-slate-500">Acesse o Painel ADM para alternar para o Plano Premium e liberar edições e novos lançamentos.</p>
+              <h4 class="font-extrabold text-sm text-slate-800 dark:text-white">Sua Escola possui o Plano Básico</h4>
+              <p class="text-xs text-slate-500">Solicite ao Administrador o upgrade para o Plano Premium para liberar edições e relatórios completos.</p>
             </div>
           </div>
-          <button onclick="navigate('admin')" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shrink-0 transition">
-            Gerenciar Planos
+          <button id="btnSolicitarPremium" onclick="solicitarPlanoPremium()" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shrink-0 transition">
+            Solicitar Plano Premium ao ADM
           </button>
         </div>
 
@@ -304,7 +305,7 @@
       <section id="page-coletas" class="hidden space-y-6 max-w-2xl mx-auto">
         <div>
           <h2 class="text-2xl font-black text-slate-800 dark:text-white">Lançar Nova Coleta ♻️</h2>
-          <p class="text-sm text-slate-500">Os dados salvos serão sincronizados na nuvem em tempo real.</p>
+          <p class="text-sm text-slate-500">Registre resíduos recicláveis e alimentos descartados na escola.</p>
         </div>
 
         <div class="card space-y-4">
@@ -314,17 +315,20 @@
               <input type="text" id="inputTurmaColeta" required placeholder="Ex.: 2º Ano A" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
             </div>
             <div>
-              <label class="block text-xs font-bold mb-1">Tipo de Material</label>
+              <label class="block text-xs font-bold mb-1">Tipo de Resíduo / Material</label>
               <select id="selectTipoColeta" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none font-bold">
-                <option value="Plástico">Plástico</option>
-                <option value="Papel/Papelão">Papel/Papelão</option>
-                <option value="Metal">Metal</option>
+                <option value="Plástico">Plástico (Garrafas, copos, etc)</option>
+                <option value="Sachês de Ketchup/Molhos">Sachês de Ketchup / Maionese / Molhos</option>
+                <option value="Guardanapos/Lenços de Papel">Guardanapos / Lenços de Papel</option>
+                <option value="Embalagens de Salgados/Biscoitos">Embalagens de Salgados / Biscoitos</option>
+                <option value="Papel/Papelão">Papel / Papelão / Caixas</option>
+                <option value="Metal">Metal (Latas de alumínio)</option>
                 <option value="Vidro">Vidro</option>
               </select>
             </div>
             <div>
               <label class="block text-xs font-bold mb-1">Quantidade em Quilogramas (Kg)</label>
-              <input type="number" id="inputKgColeta" min="0.1" step="0.1" required placeholder="Ex.: 25.5" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+              <input type="number" id="inputKgColeta" min="0.1" step="0.1" required placeholder="Ex.: 2.5" class="w-full p-3 rounded-xl border bg-slate-50 dark:bg-slate-900 text-sm outline-none">
             </div>
 
             <button type="submit" class="w-full py-3.5 btn-gradient rounded-xl text-sm flex items-center justify-center gap-2">
@@ -334,7 +338,7 @@
         </div>
 
         <div class="card space-y-3">
-          <h3 class="font-bold text-sm text-slate-800 dark:text-white">Últimos Lançamentos em Tempo Real</h3>
+          <h3 class="font-bold text-sm text-slate-800 dark:text-white">Últimos Lançamentos da Escola</h3>
           <div id="listaHistoricoColetas" class="space-y-2 text-xs"></div>
         </div>
       </section>
@@ -350,7 +354,7 @@
       <section id="page-desafios" class="hidden space-y-6">
         <div>
           <h2 class="text-2xl font-black text-slate-800 dark:text-white">Desafios, Gamificação & Prêmios 🎯</h2>
-          <p class="text-sm text-slate-500">Atividades e conquistas ativas.</p>
+          <p class="text-sm text-slate-500">Atividades e conquistas ecológicas ativas.</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
@@ -453,13 +457,22 @@
       <section id="page-admin" class="hidden space-y-6">
         <div>
           <h2 class="text-2xl font-black text-slate-800 dark:text-white">Painel ADM Geral 🛠️</h2>
-          <p class="text-sm text-slate-500">Controle total do administrador de toda a plataforma.</p>
+          <p class="text-sm text-slate-500">Gerenciamento global de escolas, planos e desafios do sistema.</p>
+        </div>
+
+        <div class="card space-y-4 border-2 border-amber-500/50 bg-amber-500/5">
+          <h3 class="font-black text-slate-800 dark:text-white flex items-center gap-2">
+            <span>📩</span> <span>Solicitações de Plano Premium Pendentes</span>
+          </h3>
+          <div id="containerSolicitacoesPremium" class="space-y-2 text-xs">
+            <p class="text-slate-400 italic">Nenhuma solicitação pendente no momento.</p>
+          </div>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-6">
           <div class="card space-y-4 lg:col-span-2 border-2 border-purple-500/30">
             <h3 class="font-black text-slate-800 dark:text-white flex items-center gap-2">
-              <span>🏫</span> <span>Gerenciar Escolas, Planos e Pagamentos</span>
+              <span>🏫</span> <span>Escolas Cadastradas e Alteração de Planos</span>
             </h3>
 
             <div class="overflow-x-auto">
@@ -502,11 +515,8 @@
         <div class="card space-y-4">
           <div class="flex flex-wrap gap-2 border-b pb-3">
             <button onclick="filtrarLixeira('escolas')" class="aba-lixeira px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-xs" data-cat="escolas">🏫 Escolas</button>
-            <button onclick="filtrarLixeira('usuarios')" class="aba-lixeira px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs" data-cat="usuarios">🧑‍🎓 Usuários</button>
             <button onclick="filtrarLixeira('coletas')" class="aba-lixeira px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs" data-cat="coletas">♻️ Coletas</button>
-            <button onclick="filtrarLixeira('desafios')" class="aba-lixeira px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs" data-cat="desafios">🎯 Desafios</button>
             <button onclick="filtrarLixeira('turmas')" class="aba-lixeira px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs" data-cat="turmas">🏆 Turmas</button>
-            <button onclick="filtrarLixeira('registros')" class="aba-lixeira px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs" data-cat="registros">📁 Registros Geral</button>
           </div>
 
           <div id="containerLixeiraItens" class="space-y-2 text-xs"></div>
@@ -523,7 +533,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-    import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
+    import { getDatabase, ref, set, onValue, push, remove } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyC-T6bV7fqR5vA6crIR2_yg9AawpYhnlu4",
@@ -539,7 +549,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ESTADO INICIAL ZERADO (SEM DADOS FICTÍCIOS)
     window.state = {
       usuario: '',
       perfil: 'estudante',
@@ -551,6 +560,9 @@
       historicoColetas: [],
       precios: {
         'Plástico': 0.38,
+        'Sachês de Ketchup/Molhos': 0.15,
+        'Guardanapos/Lenços de Papel': 0.10,
+        'Embalagens de Salgados/Biscoitos': 0.20,
         'Papel/Papelão': 0.25,
         'Metal': 1.20,
         'Vidro': 0.18
@@ -560,13 +572,11 @@
         desc: 'Aguardando lançamento pelo ADM.'
       },
       escolasPlataforma: {},
+      solicitacoesPremium: {},
       lixeira: {
         escolas: [],
-        usuarios: [],
         coletas: [],
-        desafios: [],
-        turmas: [],
-        registros: []
+        turmas: []
       },
       categoriaLixeiraAtual: 'escolas'
     };
@@ -574,7 +584,6 @@
     let chartDashInstance = null;
     let chartMatInstance = null;
 
-    // BANCO DE DADOS EM TEMPO REAL
     const appRef = ref(db, 'ecogestao');
     onValue(appRef, (snapshot) => {
       const data = snapshot.val();
@@ -582,11 +591,25 @@
         if (data.precios) window.state.precios = data.precios;
         if (data.desafioSemana) window.state.desafioSemana = data.desafioSemana;
         if (data.escolasPlataforma) window.state.escolasPlataforma = data.escolasPlataforma;
+        if (data.solicitacoesPremium) window.state.solicitacoesPremium = data.solicitacoesPremium;
         if (data.lixeira) window.state.lixeira = data.lixeira;
+        
         if (data.historicoColetas) {
-          window.state.historicoColetas = Object.values(data.historicoColetas);
+          const todasColetas = Object.values(data.historicoColetas);
+          if (window.state.perfil === 'estudante' && window.state.escola) {
+            window.state.historicoColetas = todasColetas.filter(c => c.escola === window.state.escola);
+          } else {
+            window.state.historicoColetas = todasColetas;
+          }
           recalcularTurmas();
         }
+
+        if (window.state.perfil === 'estudante' && window.state.escola) {
+          if (window.state.escolasPlataforma[window.state.escola]) {
+            window.state.plano = window.state.escolasPlataforma[window.state.escola].plano;
+          }
+        }
+
         atualizarInterface();
       }
     });
@@ -607,12 +630,11 @@
     }
 
     window.salvarEstadoFirebase = function() {
-      set(ref(db, 'ecogestao'), {
-        precios: window.state.precios,
-        desafioSemana: window.state.desafioSemana,
-        escolasPlataforma: window.state.escolasPlataforma,
-        lixeira: window.state.lixeira
-      });
+      set(ref(db, 'ecogestao/precios'), window.state.precios);
+      set(ref(db, 'ecogestao/desafioSemana'), window.state.desafioSemana);
+      set(ref(db, 'ecogestao/escolasPlataforma'), window.state.escolasPlataforma);
+      set(ref(db, 'ecogestao/solicitacoesPremium'), window.state.solicitacoesPremium);
+      set(ref(db, 'ecogestao/lixeira'), window.state.lixeira);
     }
 
     window.showToast = function(mensagem, tipo = 'info') {
@@ -628,14 +650,6 @@
       toast.innerHTML = `<span>${mensagem}</span>`;
       container.appendChild(toast);
       setTimeout(() => toast.remove(), 4000);
-    }
-
-    window.exigirPremium = function() {
-      if (window.state.plano !== 'Premium' && window.state.perfil !== 'adm') {
-        showToast('🔒 Recurso exclusivo do Plano Premium! Solicite ao ADM.', 'warning');
-        return false;
-      }
-      return true;
     }
 
     window.selecionarAcesso = function(tipo) {
@@ -660,15 +674,19 @@
 
     window.loginEstudante = function(e) {
       if (e) e.preventDefault();
+      const nomeEscola = document.getElementById('inputEscolaEstudante').value.trim() || 'Escola Sem Nome';
+      
       window.state.usuario = document.getElementById('inputNomeEstudante').value.trim() || 'Estudante';
-      window.state.escola = document.getElementById('inputEscolaEstudante').value.trim() || 'Escola Sem Nome';
+      window.state.escola = nomeEscola;
       window.state.turma = document.getElementById('inputTurmaEstudante').value.trim() || 'Sem Turma';
       window.state.perfil = 'estudante';
 
-      if (!window.state.escolasPlataforma[window.state.escola]) {
-        window.state.escolasPlataforma[window.state.escola] = { plano: 'Básico', pago: false };
+      if (!window.state.escolasPlataforma[nomeEscola]) {
+        window.state.escolasPlataforma[nomeEscola] = { plano: 'Básico', pago: false };
+        salvarEstadoFirebase();
       }
-      window.state.plano = window.state.escolasPlataforma[window.state.escola].plano;
+
+      window.state.plano = window.state.escolasPlataforma[nomeEscola].plano;
 
       concluirAcesso();
     }
@@ -680,10 +698,10 @@
         document.getElementById('erroSenhaAdm').classList.remove('hidden');
         return;
       }
-      window.state.usuario = document.getElementById('inputNomeAdm').value.trim() || 'Administrador';
+      window.state.usuario = document.getElementById('inputNomeAdm').value.trim() || 'Administrador Geral';
       window.state.perfil = 'adm';
-      window.state.escola = 'Administração Geral';
-      window.state.turma = ''; // ADM não pertence a turmas
+      window.state.escola = 'Administração Central';
+      window.state.turma = '';
       window.state.plano = 'Premium';
 
       concluirAcesso();
@@ -693,8 +711,11 @@
       document.getElementById('login-modal').classList.add('hidden');
       
       document.querySelectorAll('.area-adm').forEach(el => {
-        if (window.state.perfil === 'adm') el.classList.remove('hidden');
-        else el.classList.add('hidden');
+        if (window.state.perfil === 'adm') {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
       });
 
       const cardEng = document.getElementById('cardEngajamentoEstudante');
@@ -708,12 +729,17 @@
 
       atualizarInterface();
       navigate('dashboard');
-      showToast(`Conectado como ${window.state.usuario}! ☁️`, 'success');
+      showToast(`Bem-vindo, ${window.state.usuario}! ☁️`, 'success');
     }
 
     window.logout = function() { location.reload(); }
 
     window.navigate = function(pageId) {
+      if (window.state.perfil !== 'adm' && (pageId === 'admin' || pageId === 'financeiro' || pageId === 'lixeira')) {
+        showToast('⛔ Acesso Restrito aos Administradores!', 'error');
+        return;
+      }
+
       document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
       const activePage = document.getElementById(`page-${pageId}`);
       if (activePage) activePage.classList.remove('hidden');
@@ -728,9 +754,27 @@
       }
     }
 
+    window.solicitarPlanoPremium = function() {
+      if (!window.state.escola) return;
+      const chaveSolicitacao = window.state.escola.replace(/[^a-zA-Z0-9]/g, '_');
+      
+      window.state.solicitacoesPremium[chaveSolicitacao] = {
+        escola: window.state.escola,
+        solicitante: window.state.usuario,
+        data: new Date().toLocaleDateString('pt-BR')
+      };
+
+      salvarEstadoFirebase();
+      showToast('🚀 Solicitação enviada ao ADM! Aguarde a liberação.', 'success');
+      const btn = document.getElementById('btnSolicitarPremium');
+      if (btn) {
+        btn.innerText = 'Solicitação Enviada ✅';
+        btn.disabled = true;
+      }
+    }
+
     window.salvarColeta = function(e) {
       if (e) e.preventDefault();
-      if (!exigirPremium()) return;
 
       const turma = document.getElementById('inputTurmaColeta').value.trim();
       const tipo = document.getElementById('selectTipoColeta').value;
@@ -743,6 +787,7 @@
         tipo: tipo,
         kg: kg,
         escola: window.state.escola,
+        usuario: window.state.usuario,
         data: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
       };
 
@@ -751,18 +796,21 @@
       document.getElementById('inputTurmaColeta').value = '';
       document.getElementById('inputKgColeta').value = '';
 
-      showToast(`Coleta de ${kg} kg enviada para o Firebase Realtime! 🚀`, 'success');
+      showToast(`Coleta de ${kg} kg de ${tipo} salva! 🚀`, 'success');
     }
 
     window.atualizarInterface = function() {
       const totalKg = window.state.turmas.reduce((acc, t) => acc + t.kg, 0);
-      const precoMedio = (window.state.precios['Plástico'] + window.state.precios['Papel/Papelão'] + window.state.precios['Metal'] + window.state.precios['Vidro']) / 4;
+      const precoMedio = (window.state.precios['Plástico'] + window.state.precios['Papel/Papelão'] + window.state.precios['Metal']) / 3;
       const valorVenda = totalKg * precoMedio;
 
       document.getElementById('lblNomeUsuario').innerText = window.state.usuario || 'Usuário';
       document.getElementById('lblPerfilBadge').innerText = window.state.perfil === 'adm' ? 'ADM Geral' : 'Estudante';
       document.getElementById('lblEscolaSidebar').innerText = window.state.escola || 'Nenhuma Instituição';
       document.getElementById('lblHeaderEscola').innerText = window.state.escola || 'Sem Escola Definida';
+      
+      const lblEscCard = document.getElementById('lblEscolaUserCard');
+      if (lblEscCard) lblEscCard.innerText = window.state.escola;
 
       const lblPlanoSidebar = document.getElementById('lblPlanoSidebar');
       const bannerPlanoBasico = document.getElementById('bannerPlanoBasico');
@@ -774,7 +822,7 @@
       } else {
         lblPlanoSidebar.innerText = 'Plano Básico';
         lblPlanoSidebar.className = 'inline-block text-[10px] font-black px-2.5 py-0.5 rounded-full mt-1.5 bg-amber-100 text-amber-800';
-        if (bannerPlanoBasico) bannerPlanoBasico.classList.remove('hidden');
+        if (bannerPlanoBasico && window.state.perfil !== 'adm') bannerPlanoBasico.classList.remove('hidden');
       }
 
       document.getElementById('kpiTotalKg').innerText = `${totalKg.toLocaleString('pt-BR')} kg`;
@@ -803,6 +851,7 @@
       renderizarHistoricoColetas();
       renderizarFormPrecos();
       renderizarEscolasAdm();
+      renderizarSolicitacoesPremium();
       renderizarLixeira();
       renderizarGraficos(totalKg);
     }
@@ -813,7 +862,7 @@
       container.innerHTML = '';
 
       if (window.state.turmas.length === 0) {
-        container.innerHTML = '<p class="text-slate-400 italic py-4 text-center">Nenhuma turma com coletas registradas até o momento.</p>';
+        container.innerHTML = '<p class="text-slate-400 italic py-4 text-center">Nenhuma coleta registrada para esta escola.</p>';
         return;
       }
 
@@ -837,7 +886,7 @@
                 <div class="progress-fill h-full" style="width: ${pct}%"></div>
               </div>
             </div>
-            <button onclick="enviarParaLixeira('turmas', '${turma.nome}')" class="area-adm ${window.state.perfil === 'adm' ? '' : 'hidden'} text-red-500 hover:text-red-700 text-xs font-bold" title="Mover Turma para Lixeira">🗑️ Excluir</button>
+            ${window.state.perfil === 'adm' ? `<button onclick="enviarParaLixeira('turmas', '${turma.nome}')" class="text-red-500 hover:text-red-700 text-xs font-bold">🗑️ Excluir</button>` : ''}
           </div>
         `;
       });
@@ -848,7 +897,7 @@
       if (!container) return;
 
       if (window.state.historicoColetas.length === 0) {
-        container.innerHTML = '<p class="text-slate-400 italic py-2">Nenhum lançamento registrado nesta sessão.</p>';
+        container.innerHTML = '<p class="text-slate-400 italic py-2">Nenhum lançamento registrado nesta escola.</p>';
         return;
       }
 
@@ -860,7 +909,7 @@
           </div>
           <div class="text-right">
             <span class="text-slate-500 font-bold">${c.kg} kg • ${c.data}</span>
-            <button onclick="enviarParaLixeira('coletas', '${c.turma} - ${c.kg}kg')" class="area-adm ${window.state.perfil === 'adm' ? '' : 'hidden'} text-red-500 text-[10px] ml-2 font-bold">🗑️</button>
+            ${window.state.perfil === 'adm' ? `<button onclick="enviarParaLixeira('coletas', '${c.turma} - ${c.kg}kg')" class="text-red-500 text-[10px] ml-2 font-bold">🗑️</button>` : ''}
           </div>
         </div>
       `).join('');
@@ -872,7 +921,7 @@
 
       const escolas = Object.entries(window.state.escolasPlataforma);
       if (escolas.length === 0) {
-        container.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-slate-400 italic">Nenhuma escola cadastrada.</td></tr>';
+        container.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-slate-400 italic">Nenhuma escola cadastrada no momento.</td></tr>';
         return;
       }
 
@@ -891,16 +940,59 @@
             </button>
           </td>
           <td class="py-3 text-right">
-            <button onclick="enviarParaLixeira('escolas', '${nome}')" class="text-red-500 font-bold hover:underline">🗑️ Mover p/ Lixeira</button>
+            <button onclick="enviarParaLixeira('escolas', '${nome}')" class="text-red-500 font-bold hover:underline">🗑️ Excluir</button>
           </td>
         </tr>
       `).join('');
     }
 
+    function renderizarSolicitacoesPremium() {
+      const container = document.getElementById('containerSolicitacoesPremium');
+      if (!container) return;
+
+      const solicitacoes = Object.entries(window.state.solicitacoesPremium);
+      if (solicitacoes.length === 0) {
+        container.innerHTML = '<p class="text-slate-400 italic">Nenhuma solicitação de upgrade pendente.</p>';
+        return;
+      }
+
+      container.innerHTML = solicitacoes.map(([key, sol]) => `
+        <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border flex justify-between items-center">
+          <div>
+            <b class="text-sm text-slate-800 dark:text-white">${sol.escola}</b>
+            <span class="text-slate-400 block">Solicitado por: ${sol.solicitante} (${sol.data})</span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="aprovarSolicitacaoPremium('${key}', '${sol.escola}')" class="px-3 py-1.5 bg-emerald-600 text-white font-bold rounded-xl text-xs hover:bg-emerald-700">Aprovar Premium ⭐</button>
+            <button onclick="recusarSolicitacaoPremium('${key}')" class="px-3 py-1.5 bg-red-600 text-white font-bold rounded-xl text-xs hover:bg-red-700">Recusar</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.aprovarSolicitacaoPremium = function(key, nomeEscola) {
+      if (!window.state.escolasPlataforma[nomeEscola]) {
+        window.state.escolasPlataforma[nomeEscola] = { plano: 'Premium', pago: true };
+      } else {
+        window.state.escolasPlataforma[nomeEscola].plano = 'Premium';
+        window.state.escolasPlataforma[nomeEscola].pago = true;
+      }
+      delete window.state.solicitacoesPremium[key];
+      salvarEstadoFirebase();
+      atualizarInterface();
+      showToast(`A escola ${nomeEscola} agora é Premium! Todos os seus alunos possuem acesso. ⭐`, 'success');
+    }
+
+    window.recusarSolicitacaoPremium = function(key) {
+      delete window.state.solicitacoesPremium[key];
+      salvarEstadoFirebase();
+      atualizarInterface();
+      showToast('Solicitação recusada com sucesso.', 'info');
+    }
+
     window.alterarPlanoEscola = function(nomeEscola, novoPlano) {
       if (window.state.escolasPlataforma[nomeEscola]) {
         window.state.escolasPlataforma[nomeEscola].plano = novoPlano;
-        if (nomeEscola === window.state.escola) window.state.plano = novoPlano;
         salvarEstadoFirebase();
         atualizarInterface();
         showToast(`Plano da escola ${nomeEscola} alterado para ${novoPlano}!`, 'success');
@@ -943,7 +1035,7 @@
       container.innerHTML = itens.map((item, idx) => `
         <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-900 flex justify-between items-center">
           <div>
-            <b class="text-slate-800 dark:text-slate-200">${item.nome || item.info || item.titulo || item.detalhe || 'Item ' + idx}</b>
+            <b class="text-slate-800 dark:text-slate-200">${item.nome}</b>
             <span class="text-[10px] text-slate-400 block">Excluído em: ${item.data || 'Hoje'}</span>
           </div>
           <div class="flex gap-2">
@@ -967,7 +1059,7 @@
 
       salvarEstadoFirebase();
       atualizarInterface();
-      showToast(`Item enviado para a Lixeira ADM na categoria ${categoria.toUpperCase()}! 🗑️`, 'warning');
+      showToast(`Item movido para a lixeira! 🗑️`, 'warning');
     }
 
     window.restaurarItemLixeira = function(cat, idx) {
@@ -1054,18 +1146,19 @@
       if (elMat) {
         if (chartMatInstance) chartMatInstance.destroy();
         
-        const totMat = { 'Plástico': 0, 'Papel/Papelão': 0, 'Metal': 0, 'Vidro': 0 };
+        const totMat = {};
         window.state.historicoColetas.forEach(c => {
-          if (totMat[c.tipo] !== undefined) totMat[c.tipo] += parseFloat(c.kg) || 0;
+          const t = c.tipo || 'Outros';
+          totMat[t] = (totMat[t] || 0) + (parseFloat(c.kg) || 0);
         });
 
         chartMatInstance = new Chart(elMat.getContext('2d'), {
           type: 'doughnut',
           data: {
-            labels: ['Plástico', 'Papel/Papelão', 'Metal', 'Vidro'],
+            labels: Object.keys(totMat).length ? Object.keys(totMat) : ['Sem dados'],
             datasets: [{
-              data: [totMat['Plástico'], totMat['Papel/Papelão'], totMat['Metal'], totMat['Vidro']],
-              backgroundColor: ['#2E8B3C', '#4C36A8', '#F59E0B', '#64748B']
+              data: Object.keys(totMat).length ? Object.values(totMat) : [1],
+              backgroundColor: ['#2E8B3C', '#4C36A8', '#F59E0B', '#64748B', '#EC4899', '#3B82F6', '#10B981']
             }]
           },
           options: { responsive: true, maintainAspectRatio: false }
