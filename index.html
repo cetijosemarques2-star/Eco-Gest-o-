@@ -143,11 +143,11 @@
       <div>
         <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">Como deseja acessar?</label>
         <div class="grid grid-cols-2 gap-3">
-          <button id="tabEstudante" onclick="selecionarAcesso('estudante')" class="p-3.5 border-2 border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 rounded-2xl text-left font-bold text-xs flex flex-col justify-between transition">
+          <button type="button" id="tabEstudante" onclick="selecionarAcesso('estudante')" class="p-3.5 border-2 border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 rounded-2xl text-left font-bold text-xs flex flex-col justify-between transition">
             <span class="text-2xl mb-1">🧑‍🎓</span>
             <span>Entrar como Estudante</span>
           </button>
-          <button id="tabAdm" onclick="selecionarAcesso('adm')" class="p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl text-left font-bold text-xs flex flex-col justify-between hover:border-purple-300 transition">
+          <button type="button" id="tabAdm" onclick="selecionarAcesso('adm')" class="p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl text-left font-bold text-xs flex flex-col justify-between hover:border-purple-300 transition">
             <span class="text-2xl mb-1">🔐</span>
             <span>Entrar como ADM</span>
           </button>
@@ -217,7 +217,7 @@
 
         <div class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 mb-4">
           <p class="text-[10px] uppercase tracking-wider font-bold text-slate-400">Instituição</p>
-          <p class="text-xs font-black text-slate-800 dark:text-slate-100 truncate mt-0.5" id="lblEscolaSidebar">Escola...</p>
+          <p class="text-xs font-black text-slate-800 dark:text-slate-100 truncate mt-0.5" id="lblEscolaSidebar">Escola Modelo</p>
           <span class="inline-block text-[10px] font-extrabold text-purple-700 dark:text-purple-300 mt-1" id="lblPlanoSidebar">Plano Básico</span>
         </div>
 
@@ -293,7 +293,7 @@
             </p>
           </div>
           <div class="text-xs text-slate-400">
-            Atualizado em: <b id="lblDataAtualizacao" class="text-slate-600 dark:text-slate-300"></b>
+            Atualizado em: <b id="lblDataAtualizacao" class="text-slate-600 dark:text-slate-300">--:--</b>
           </div>
         </div>
 
@@ -388,7 +388,7 @@
         <div class="card space-y-3">
           <h3 class="font-bold text-sm text-slate-800 dark:text-white">Últimos Lançamentos Realizados</h3>
           <div id="listaHistoricoColetas" class="space-y-2 text-xs">
-            </div>
+          </div>
         </div>
       </section>
 
@@ -399,7 +399,7 @@
         </div>
 
         <div id="containerRanking" class="space-y-3">
-          </div>
+        </div>
       </section>
 
       <section id="page-desafios" class="hidden space-y-6">
@@ -432,330 +432,435 @@
         <div class="grid md:grid-cols-3 gap-4">
           <div class="card">
             <span class="text-xs font-bold text-slate-400 uppercase">Volume Acumulado</span>
-            <p id="lblIndTotalKg" class="text-3xl font-black text-slate-800 dark:text-whitemt-1">0 kg</p>
-</div>
-<div class="card">
-<span class="text-xs font-bold text-slate-400 uppercase">Engajamento</span>
-<p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1">123 Alunos</p>
-</div>
-<div class="card">
-<span class="text-xs font-bold text-slate-400 uppercase">Meta Trimestral</span>
-<p class="text-3xl font-black text-purple-600 dark:text-purple-400 mt-1">1.000 kg</p>
-</div>
-</div>
-<div class="card space-y-4">
-<h3 class="font-black text-slate-800 dark:text-white">Composição por Tipo de Material</h3>
-<div class="h-64">
-<canvas id="chartMateriais"></canvas>
-</div>
-</div>
-</section>
-<section id="page-financeiro" class="hidden space-y-6">
-<div>
-<h2 class="text-2xl font-black text-slate-800 dark:text-white">Demonstrativo Financeiro 💰</h2>
-<p class="text-sm text-slate-500">Recursos estimados com base nos preços por material.</p>
-</div>
-<div class="grid md:grid-cols-3 gap-6">
-<div class="card">
-<span class="text-xs font-bold text-slate-400 uppercase">Venda de Recicláveis</span>
-<p id="lblFinVenda" class="text-3xl font-black text-slate-800 dark:text-white mt-2">R$ 0,00</p>
-</div>
-<div class="card">
-<span class="text-xs font-bold text-slate-400 uppercase">Apoio & Parcerias</span>
-<p class="text-3xl font-black text-purple-600 dark:text-purple-400 mt-2">R$ 160,00</p>
-</div>
-<div class="card border-2 border-emerald-500/50 bg-emerald-50/20">
-<span class="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase">Receita Total Gerada</span>
-<p id="lblFinTotal" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-2">R$ 160,00</p>
-</div>
-</div>
-</section>
-<section id="page-admin" class="hidden space-y-6">
-<div>
-<h2 class="text-2xl font-black text-slate-800 dark:text-white">Painel Administrativo 🔐</h2>
-<p class="text-sm text-slate-500">Configuração de plano, metas e valores de materiais.</p>
-</div>
-<div class="grid lg:grid-cols-2 gap-6">
-<div class="card space-y-3">
-<h3 class="font-black text-slate-800 dark:text-white">Plano da Instituição</h3>
-<select id="selectPlanoAdm" onchange="alterarPlano()" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
-<option value="Básico">Plano Básico</option>
-<option value="Premium">Plano Premium</option>
-</select>
-</div>
-<div class="card space-y-3">
-<h3 class="font-black text-slate-800 dark:text-white">Desafio da Semana</h3>
-<input type="text" id="inputSemanaTitulo" placeholder="Título" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
-<input type="text" id="inputSemanaDesc" placeholder="Descrição" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
-<button onclick="salvarDesafioSemana()" class="btn-gradient px-4 py-2.5 rounded-xl text-xs">Salvar Desafio</button>
-</div>
-<div class="card space-y-3 lg:col-span-2">
-<h3 class="font-black text-slate-800 dark:text-white">Tabela de Preços por Material (R$/kg)</h3>
-<div id="containerPrecosMateriais" class="grid grid-cols-2 md:grid-cols-4 gap-3">
-</div>
-<button onclick="salvarPrecos()" class="btn-gradient px-4 py-2.5 rounded-xl text-xs">Atualizar Preços</button>
-</div>
-</div>
-</section>
-<section id="page-config" class="hidden space-y-6">
-<div>
-<h2 class="text-2xl font-black text-slate-800 dark:text-white">Configurações ⚙️</h2>
-<p class="text-sm text-slate-500">Ajustes gerais do sistema.</p>
-</div>
-<div class="card max-w-xl space-y-4">
-<h3 class="font-black text-slate-800 dark:text-white">Nome da Escola</h3>
-<input type="text" id="inputEditarEscola" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
-<button onclick="salvarNomeEscola()" class="btn-gradient px-4 py-2.5 rounded-xl text-xs">Atualizar Instituição</button>
-</div>
-</section>
-<footer class="mt-12 text-center text-xs text-slate-400 py-6 border-t border-slate-200 dark:border-slate-800">
-<p class="font-bold text-slate-600 dark:text-slate-300">EcoGestão • OBNE 2026</p>
-<p class="mt-1">Gestão inteligente de resíduos escolares.</p>
-</footer>
-</main>
-</div>
-<script>
-const state = {
-usuario: 'Estudante',
-perfil: 'estudante',
-escola: 'Escola Modelo',
-turma: '2º Ano A',
-plano: 'Básico',
-metaKg: 1000,
-turmas: [
-{ nome: '2º Ano A', kg: 320 },
-{ nome: '1º Ano B', kg: 270 },
-{ nome: '3º Ano A', kg: 210 }
-],
-historicoColetas: [],
-precios: {
-'Plástico': 0.38,
-'Papel/Papelão': 0.25,
-'Metal': 1.20,
-'Vidro': 0.18
-},
-desafioSemana: {
-titulo: 'Gincana do PET',
-desc: 'Acumule 50 kg de garrafas plásticas nesta semana.'
-},
-desafioMes: {
-titulo: 'Escola Circular',
-desc: 'Atingir 300 kg de materiais recicláveis no mês.'
-}
-};
-let chartDashInstance = null;
-let chartMatInstance = null;
-function selecionarAcesso(tipo) {
-const tabEst = document.getElementById('tabEstudante');
-const tabAdm = document.getElementById('tabAdm');
-const formEst = document.getElementById('formEstudante');
-const formAdm = document.getElementById('formAdm');
-if (tipo === 'estudante') {
-tabEst.className = 'p-3.5 border-2 border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 rounded-2xl text-left font-bold text-xs flex flex-col justify-between transition';
-tabAdm.className = 'p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl text-left font-bold text-xs flex flex-col justify-between hover:border-purple-300 transition';
-formEst.classList.remove('hidden');
-formAdm.classList.add('hidden');
-} else {
-tabAdm.className = 'p-3.5 border-2 border-purple-600 bg-purple-50 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 rounded-2xl text-left font-bold text-xs flex flex-col justify-between transition';
-tabEst.className = 'p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl text-left font-bold text-xs flex flex-col justify-between hover:border-emerald-300 transition';
-formAdm.classList.remove('hidden');
-formEst.classList.add('hidden');
-}
-}
-function loginEstudante(e) {
-e.preventDefault();
-state.usuario = document.getElementById('inputNomeEstudante').value.trim() || 'Estudante';
-state.escola = document.getElementById('inputEscolaEstudante').value.trim() || 'Escola Modelo';
-state.turma = document.getElementById('inputTurmaEstudante').value.trim() || '2º Ano A';
-state.perfil = 'estudante';
-concluirAcesso();
-}
-function loginAdm(e) {
-e.preventDefault();
-const senha = document.getElementById('inputSenhaAdm').value;
-if (senha !== 'reciclagem2026') {
-document.getElementById('erroSenhaAdm').classList.remove('hidden');
-return;
-}
-state.usuario = document.getElementById('inputNomeAdm').value.trim() || 'Gestão ADM';
-state.escola = localStorage.getItem('ecoEscolaCadastrada') || 'Escola Modelo';
-state.perfil = 'adm';
-concluirAcesso();
-}
-function concluirAcesso() {
-localStorage.setItem('ecoEscolaCadastrada', state.escola);
-document.getElementById('login-modal').classList.add('hidden');
-const elementosAdm = document.querySelectorAll('.area-adm');
-elementosAdm.forEach(el => {
-if (state.perfil === 'adm') {
-el.classList.remove('hidden');
-} else {
-el.classList.add('hidden');
-}
-});
-atualizarInterface();
-navigate('dashboard');
-}
-function logout() {
-location.reload();
-}
-function navigate(pageId) {
-document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
-const activePage = document.getElementById(page-${pageId});
-if (activePage) activePage.classList.remove('hidden');
-document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('nav-active'));
-const activeBtn = document.querySelector([data-page="${pageId}"]);
-if (activeBtn) activeBtn.classList.add('nav-active');
-if (window.innerWidth < 768) {
-document.getElementById('sidebar').classList.remove('open');
-document.getElementById('mobileOverlay').classList.add('hidden');
-}
-}
-function salvarColeta(e) {
-e.preventDefault();
-const turma = document.getElementById('inputTurmaColeta').value.trim();
-const kg = parseFloat(document.getElementById('inputKgColeta').value);
-if (!turma || isNaN(kg) || kg <= 0) return;
-let itemTurma = state.turmas.find(t => t.nome.toLowerCase() === turma.toLowerCase());
-if (itemTurma) {
-itemTurma.kg += kg;
-} else {
-state.turmas.push({ nome: turma, kg: kg });
-}
-state.historicoColetas.unshift({
-turma: turma,
-kg: kg,
-data: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-});
-document.getElementById('inputTurmaColeta').value = '';
-document.getElementById('inputKgColeta').value = '';
-atualizarInterface();
-alert(Coleta de ${kg} kg registrada com sucesso para ${turma}!);
-}
-function atualizarInterface() {
-const totalKg = state.turmas.reduce((acc, t) => acc + t.kg, 0);
-const precoMedio = (state.precios['Plástico'] + state.precios['Papel/Papelão'] + state.precios['Metal'] + state.precios['Vidro']) / 4;
-const valorVenda = totalKg * precoMedio;
-document.getElementById('lblNomeUsuario').innerText = state.usuario;
-document.getElementById('lblPerfilBadge').innerText = state.perfil === 'adm' ? 'Gestão ADM' : 'Estudante';
-document.getElementById('lblEscolaSidebar').innerText = state.escola;
-document.getElementById('lblHeaderEscola').innerText = state.escola;
-document.getElementById('lblPlanoSidebar').innerText = Plano ${state.plano};
-document.getElementById('lblDataAtualizacao').innerText = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-document.getElementById('kpiTotalKg').innerText = ${totalKg.toLocaleString('pt-BR')} kg;
-document.getElementById('lblIndTotalKg').innerText = ${totalKg.toLocaleString('pt-BR')} kg;
-document.getElementById('kpiTurmasCount').innerText = state.turmas.length;
-document.getElementById('kpiValorGerado').innerText = R$ ${valorVenda.toFixed(2).replace('.', ',')};
-const pctMeta = Math.min(100, Math.round((totalKg / state.metaKg) * 100));
-document.getElementById('lblMetaPct').innerText = ${pctMeta}%;
-document.getElementById('barMetaProgresso').style.width = ${pctMeta}%;
-document.getElementById('lblMetaAtual').innerText = totalKg.toLocaleString('pt-BR');
-document.getElementById('lblFinVenda').innerText = R$ ${valorVenda.toFixed(2).replace('.', ',')};
-document.getElementById('lblFinTotal').innerText = R$ ${(valorVenda + 160).toFixed(2).replace('.', ',')};
-document.getElementById('lblDesafioSemanaTitulo').innerText = state.desafioSemana.titulo;
-document.getElementById('lblDesafioSemanaDesc').innerText = state.desafioSemana.desc;
-renderizarRanking();
-renderizarHistoricoColetas();
-renderizarFormPrecos();
-renderizarGraficos(totalKg);
-}
-function renderizarRanking() {
-const container = document.getElementById('containerRanking');
-container.innerHTML = '';
-const turmasOrdenadas = [...state.turmas].sort((a, b) => b.kg - a.kg);
-const maiorKg = turmasOrdenadas[0]?.kg || 1;
-turmasOrdenadas.forEach((turma, index) => {
-const pos = index + 1;
-const icon = pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : '🏅';
-const pct = Math.round((turma.kg / maiorKg) * 100);
-container.innerHTML += <div class="card flex items-center gap-4"> <div class="text-3xl">${icon}</div> <div class="flex-1"> <div class="flex justify-between text-xs font-bold mb-1"> <span class="text-slate-800 dark:text-white">${turma.nome}</span> <span class="text-slate-500">${turma.kg.toLocaleString('pt-BR')} kg</span> </div> <div class="progress-bar h-2.5"> <div class="progress-fill h-full" style="width: ${pct}%"></div> </div> </div> </div>;
-});
-}
-function renderizarHistoricoColetas() {
-const container = document.getElementById('listaHistoricoColetas');
-if (state.historicoColetas.length === 0) {
-container.innerHTML = '<p class="text-slate-400 italic">Nenhum lançamento nesta sessão.</p>';
-return;
-}
-container.innerHTML = state.historicoColetas.slice(0, 5).map(c => <div class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 flex justify-between"> <b class="text-slate-700 dark:text-slate-300">${c.turma}</b> <span class="text-slate-500">${c.kg} kg • ${c.data}</span> </div>).join('');
-}
-function renderizarFormPrecos() {
-const container = document.getElementById('containerPrecosMateriais');
-container.innerHTML = Object.entries(state.precios).map(([m, p]) => <div> <label class="block text-xs font-bold text-slate-500 mb-1">${m}</label> <input data-preco="${m}" type="number" step="0.01" value="${p}" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-xs outline-none"> </div>).join('');
-}
-function salvarPrecos() {
-document.querySelectorAll('[data-preco]').forEach(inp => {
-state.precios[inp.dataset.preco] = parseFloat(inp.value) || 0;
-});
-atualizarInterface();
-alert('Tabela de preços atualizada com sucesso!');
-}
-function salvarDesafioSemana() {
-state.desafioSemana.titulo = document.getElementById('inputSemanaTitulo').value || state.desafioSemana.titulo;
-state.desafioSemana.desc = document.getElementById('inputSemanaDesc').value || state.desafioSemana.desc;
-atualizarInterface();
-alert('Desafio semanal atualizado!');
-}
-function alterarPlano() {
-state.plano = document.getElementById('selectPlanoAdm').value;
-atualizarInterface();
-}
-function salvarNomeEscola() {
-state.escola = document.getElementById('inputEditarEscola').value.trim() || state.escola;
-localStorage.setItem('ecoEscolaCadastrada', state.escola);
-atualizarInterface();
-alert('Nome da escola atualizado!');
-}
-function toggleDark() {
-document.body.classList.toggle('dark');
-localStorage.setItem('ecoDark', document.body.classList.contains('dark'));
-}
-function toggleDrawer() {
-document.getElementById('sidebar').classList.toggle('open');
-document.getElementById('mobileOverlay').classList.toggle('hidden');
-}
-function renderizarGraficos(totalKg) {
-const ctxDash = document.getElementById('chartDashboard').getContext('2d');
-if (chartDashInstance) chartDashInstance.destroy();
-chartDashInstance = new Chart(ctxDash, {
-type: 'line',
-data: {
-labels: ['Mai', 'Jun', 'Jul', 'Ago'],
-datasets: [{
-label: 'Kg Coletados',
-data: [100, 200, 200, totalKg],
-borderColor: '#2E8B3C',
-backgroundColor: 'rgba(46, 139, 60, 0.1)',
-fill: true,
-tension: 0.4
-}]
-},
-options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-});
-const ctxMat = document.getElementById('chartMateriais').getContext('2d');
-if (chartMatInstance) chartMatInstance.destroy();
-chartMatInstance = new Chart(ctxMat, {
-type: 'doughnut',
-data: {
-labels: ['Plástico', 'Papel/Papelão', 'Metal', 'Vidro'],
-datasets: [{
-data: [45, 30, 15, 10],
-backgroundColor: ['#2E8B3C', '#4C36A8', '#F59E0B', '#64748B']
-}]
-},
-options: { responsive: true, maintainAspectRatio: false }
-});
-}
-window.onload = function() {
-if (localStorage.getItem('ecoDark') === 'true') {
-document.body.classList.add('dark');
-}
-const escolaSalva = localStorage.getItem('ecoEscolaCadastrada');
-if (escolaSalva) {
-document.getElementById('inputEscolaEstudante').value = escolaSalva;
-document.getElementById('inputEditarEscola').value = escolaSalva;
-}
-};
-</script>
+            <p id="lblIndTotalKg" class="text-3xl font-black text-slate-800 dark:text-white mt-1">0 kg</p>
+          </div>
+          <div class="card">
+            <span class="text-xs font-bold text-slate-400 uppercase">Engajamento</span>
+            <p class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-1">123 Alunos</p>
+          </div>
+          <div class="card">
+            <span class="text-xs font-bold text-slate-400 uppercase">Meta Trimestral</span>
+            <p class="text-3xl font-black text-purple-600 dark:text-purple-400 mt-1">1.000 kg</p>
+          </div>
+        </div>
+
+        <div class="card space-y-4">
+          <h3 class="font-black text-slate-800 dark:text-white">Composição por Tipo de Material</h3>
+          <div class="h-64">
+            <canvas id="chartMateriais"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-financeiro" class="hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black text-slate-800 dark:text-white">Demonstrativo Financeiro 💰</h2>
+          <p class="text-sm text-slate-500">Recursos estimados com base nos preços por material.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="card">
+            <span class="text-xs font-bold text-slate-400 uppercase">Venda de Recicláveis</span>
+            <p id="lblFinVenda" class="text-3xl font-black text-slate-800 dark:text-white mt-2">R$ 0,00</p>
+          </div>
+
+          <div class="card">
+            <span class="text-xs font-bold text-slate-400 uppercase">Apoio & Parcerias</span>
+            <p class="text-3xl font-black text-purple-600 dark:text-purple-400 mt-2">R$ 160,00</p>
+          </div>
+
+          <div class="card border-2 border-emerald-500/50 bg-emerald-50/20">
+            <span class="text-xs font-bold text-emerald-700 dark:text-emerald-300 uppercase">Receita Total Gerada</span>
+            <p id="lblFinTotal" class="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-2">R$ 160,00</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-admin" class="hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black text-slate-800 dark:text-white">Painel Administrativo 🔐</h2>
+          <p class="text-sm text-slate-500">Configuração de plano, metas e valores de materiais.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-6">
+          <div class="card space-y-3">
+            <h3 class="font-black text-slate-800 dark:text-white">Plano da Instituição</h3>
+            <select id="selectPlanoAdm" onchange="alterarPlano()" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+              <option value="Básico">Plano Básico</option>
+              <option value="Premium">Plano Premium</option>
+            </select>
+          </div>
+
+          <div class="card space-y-3">
+            <h3 class="font-black text-slate-800 dark:text-white">Desafio da Semana</h3>
+            <input type="text" id="inputSemanaTitulo" placeholder="Título" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+            <input type="text" id="inputSemanaDesc" placeholder="Descrição" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+            <button onclick="salvarDesafioSemana()" class="btn-gradient px-4 py-2.5 rounded-xl text-xs">Salvar Desafio</button>
+          </div>
+
+          <div class="card space-y-3 lg:col-span-2">
+            <h3 class="font-black text-slate-800 dark:text-white">Tabela de Preços por Material (R$/kg)</h3>
+            <div id="containerPrecosMateriais" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            </div>
+            <button onclick="salvarPrecos()" class="btn-gradient px-4 py-2.5 rounded-xl text-xs">Atualizar Preços</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-config" class="hidden space-y-6">
+        <div>
+          <h2 class="text-2xl font-black text-slate-800 dark:text-white">Configurações ⚙️</h2>
+          <p class="text-sm text-slate-500">Ajustes gerais do sistema.</p>
+        </div>
+
+        <div class="card max-w-xl space-y-4">
+          <h3 class="font-black text-slate-800 dark:text-white">Nome da Escola</h3>
+          <input type="text" id="inputEditarEscola" class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-sm outline-none">
+          <button onclick="salvarNomeEscola()" class="btn-gradient px-4 py-2.5 rounded-xl text-xs">Atualizar Instituição</button>
+        </div>
+      </section>
+
+      <footer class="mt-12 text-center text-xs text-slate-400 py-6 border-t border-slate-200 dark:border-slate-800">
+        <p class="font-bold text-slate-600 dark:text-slate-300">EcoGestão • OBNE 2026</p>
+        <p class="mt-1">Gestão inteligente de resíduos escolares.</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <script>
+    const state = {
+      usuario: 'Estudante',
+      perfil: 'estudante',
+      escola: 'Escola Modelo',
+      turma: '2º Ano A',
+      plano: 'Básico',
+      metaKg: 1000,
+      turmas: [
+        { nome: '2º Ano A', kg: 320 },
+        { nome: '1º Ano B', kg: 270 },
+        { nome: '3º Ano A', kg: 210 }
+      ],
+      historicoColetas: [],
+      precios: {
+        'Plástico': 0.38,
+        'Papel/Papelão': 0.25,
+        'Metal': 1.20,
+        'Vidro': 0.18
+      },
+      desafioSemana: {
+        titulo: 'Gincana do PET',
+        desc: 'Acumule 50 kg de garrafas plásticas nesta semana.'
+      },
+      desafioMes: {
+        titulo: 'Escola Circular',
+        desc: 'Atingir 300 kg de materiais recicláveis no mês.'
+      }
+    };
+
+    let chartDashInstance = null;
+    let chartMatInstance = null;
+
+    // SELEÇÃO DE ABAS NO MODAL
+    function selecionarAcesso(tipo) {
+      const tabEst = document.getElementById('tabEstudante');
+      const tabAdm = document.getElementById('tabAdm');
+      const formEst = document.getElementById('formEstudante');
+      const formAdm = document.getElementById('formAdm');
+      const erroSenha = document.getElementById('erroSenhaAdm');
+
+      if (erroSenha) erroSenha.classList.add('hidden');
+
+      if (tipo === 'estudante') {
+        tabEst.className = 'p-3.5 border-2 border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-900 dark:text-emerald-200 rounded-2xl text-left font-bold text-xs flex flex-col justify-between transition';
+        tabAdm.className = 'p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl text-left font-bold text-xs flex flex-col justify-between hover:border-purple-300 transition';
+        formEst.classList.remove('hidden');
+        formAdm.classList.add('hidden');
+      } else {
+        tabAdm.className = 'p-3.5 border-2 border-purple-600 bg-purple-50 dark:bg-purple-950/40 text-purple-900 dark:text-purple-200 rounded-2xl text-left font-bold text-xs flex flex-col justify-between transition';
+        tabEst.className = 'p-3.5 border-2 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-2xl text-left font-bold text-xs flex flex-col justify-between hover:border-emerald-300 transition';
+        formAdm.classList.remove('hidden');
+        formEst.classList.add('hidden');
+      }
+    }
+
+    // LOGIN ESTUDANTE
+    function loginEstudante(e) {
+      if (e) e.preventDefault();
+      state.usuario = document.getElementById('inputNomeEstudante').value.trim() || 'Estudante';
+      state.escola = document.getElementById('inputEscolaEstudante').value.trim() || 'Escola Modelo';
+      state.turma = document.getElementById('inputTurmaEstudante').value.trim() || '2º Ano A';
+      state.perfil = 'estudante';
+
+      concluirAcesso();
+    }
+
+    // LOGIN ADM
+    function loginAdm(e) {
+      if (e) e.preventDefault();
+      const senha = document.getElementById('inputSenhaAdm').value;
+
+      if (senha !== 'reciclagem2026') {
+        document.getElementById('erroSenhaAdm').classList.remove('hidden');
+        return;
+      }
+
+      state.usuario = document.getElementById('inputNomeAdm').value.trim() || 'Gestão ADM';
+      state.escola = localStorage.getItem('ecoEscolaCadastrada') || state.escola || 'Escola Modelo';
+      state.perfil = 'adm';
+
+      concluirAcesso();
+    }
+
+    // FECHAR MODAL E EXIBIR PAINEL
+    function concluirAcesso() {
+      localStorage.setItem('ecoEscolaCadastrada', state.escola);
+      
+      const modal = document.getElementById('login-modal');
+      if (modal) modal.classList.add('hidden');
+
+      const elementosAdm = document.querySelectorAll('.area-adm');
+      elementosAdm.forEach(el => {
+        if (state.perfil === 'adm') {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+
+      atualizarInterface();
+      navigate('dashboard');
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    function navigate(pageId) {
+      document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+      const activePage = document.getElementById(`page-${pageId}`);
+      if (activePage) activePage.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('nav-active'));
+      const activeBtn = document.querySelector(`[data-page="${pageId}"]`);
+      if (activeBtn) activeBtn.classList.add('nav-active');
+
+      if (window.innerWidth < 768) {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('mobileOverlay').classList.add('hidden');
+      }
+    }
+
+    function salvarColeta(e) {
+      if (e) e.preventDefault();
+      const turma = document.getElementById('inputTurmaColeta').value.trim();
+      const kg = parseFloat(document.getElementById('inputKgColeta').value);
+
+      if (!turma || isNaN(kg) || kg <= 0) return;
+
+      let itemTurma = state.turmas.find(t => t.nome.toLowerCase() === turma.toLowerCase());
+      if (itemTurma) {
+        itemTurma.kg += kg;
+      } else {
+        state.turmas.push({ nome: turma, kg: kg });
+      }
+
+      state.historicoColetas.unshift({
+        turma: turma,
+        kg: kg,
+        data: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+      });
+
+      document.getElementById('inputTurmaColeta').value = '';
+      document.getElementById('inputKgColeta').value = '';
+
+      atualizarInterface();
+      alert(`Coleta de ${kg} kg registrada para a turma ${turma}!`);
+    }
+
+    function atualizarInterface() {
+      const totalKg = state.turmas.reduce((acc, t) => acc + t.kg, 0);
+      const precoMedio = (state.precios['Plástico'] + state.precios['Papel/Papelão'] + state.precios['Metal'] + state.precios['Vidro']) / 4;
+      const valorVenda = totalKg * precoMedio;
+
+      document.getElementById('lblNomeUsuario').innerText = state.usuario;
+      document.getElementById('lblPerfilBadge').innerText = state.perfil === 'adm' ? 'Gestão ADM' : 'Estudante';
+      document.getElementById('lblEscolaSidebar').innerText = state.escola;
+      document.getElementById('lblHeaderEscola').innerText = state.escola;
+      document.getElementById('lblPlanoSidebar').innerText = `Plano ${state.plano}`;
+      document.getElementById('lblDataAtualizacao').innerText = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById('kpiTotalKg').innerText = `${totalKg.toLocaleString('pt-BR')} kg`;
+      document.getElementById('lblIndTotalKg').innerText = `${totalKg.toLocaleString('pt-BR')} kg`;
+      document.getElementById('kpiTurmasCount').innerText = state.turmas.length;
+      document.getElementById('kpiValorGerado').innerText = `R$ ${valorVenda.toFixed(2).replace('.', ',')}`;
+
+      const pctMeta = Math.min(100, Math.round((totalKg / state.metaKg) * 100));
+      document.getElementById('lblMetaPct').innerText = `${pctMeta}%`;
+      document.getElementById('barMetaProgresso').style.width = `${pctMeta}%`;
+      document.getElementById('lblMetaAtual').innerText = totalKg.toLocaleString('pt-BR');
+
+      document.getElementById('lblFinVenda').innerText = `R$ ${valorVenda.toFixed(2).replace('.', ',')}`;
+      document.getElementById('lblFinTotal').innerText = `R$ ${(valorVenda + 160).toFixed(2).replace('.', ',')}`;
+
+      document.getElementById('lblDesafioSemanaTitulo').innerText = state.desafioSemana.titulo;
+      document.getElementById('lblDesafioSemanaDesc').innerText = state.desafioSemana.desc;
+
+      renderizarRanking();
+      renderizarHistoricoColetas();
+      renderizarFormPrecos();
+
+      renderizarGraficos(totalKg);
+    }
+
+    function renderizarRanking() {
+      const container = document.getElementById('containerRanking');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const turmasOrdenadas = [...state.turmas].sort((a, b) => b.kg - a.kg);
+      const maiorKg = turmasOrdenadas[0]?.kg || 1;
+
+      turmasOrdenadas.forEach((turma, index) => {
+        const pos = index + 1;
+        const icon = pos === 1 ? '🥇' : pos === 2 ? '🥈' : pos === 3 ? '🥉' : '🏅';
+        const pct = Math.round((turma.kg / maiorKg) * 100);
+
+        container.innerHTML += `
+          <div class="card flex items-center gap-4">
+            <div class="text-3xl">${icon}</div>
+            <div class="flex-1">
+              <div class="flex justify-between text-xs font-bold mb-1">
+                <span class="text-slate-800 dark:text-white">${turma.nome}</span>
+                <span class="text-slate-500">${turma.kg.toLocaleString('pt-BR')} kg</span>
+              </div>
+              <div class="progress-bar h-2.5">
+                <div class="progress-fill h-full" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderizarHistoricoColetas() {
+      const container = document.getElementById('listaHistoricoColetas');
+      if (!container) return;
+
+      if (state.historicoColetas.length === 0) {
+        container.innerHTML = '<p class="text-slate-400 italic">Nenhum lançamento registrado nesta sessão.</p>';
+        return;
+      }
+
+      container.innerHTML = state.historicoColetas.slice(0, 5).map(c => `
+        <div class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 flex justify-between">
+          <b class="text-slate-700 dark:text-slate-300">${c.turma}</b>
+          <span class="text-slate-500">${c.kg} kg • ${c.data}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderizarFormPrecos() {
+      const container = document.getElementById('containerPrecosMateriais');
+      if (!container) return;
+
+      container.innerHTML = Object.entries(state.precios).map(([m, p]) => `
+        <div>
+          <label class="block text-xs font-bold text-slate-500 mb-1">${m}</label>
+          <input data-preco="${m}" type="number" step="0.01" value="${p}" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-xs outline-none">
+        </div>
+      `).join('');
+    }
+
+    function salvarPrecos() {
+      document.querySelectorAll('[data-preco]').forEach(inp => {
+        state.precios[inp.dataset.preco] = parseFloat(inp.value) || 0;
+      });
+      atualizarInterface();
+      alert('Tabela de preços atualizada com sucesso!');
+    }
+
+    function salvarDesafioSemana() {
+      state.desafioSemana.titulo = document.getElementById('inputSemanaTitulo').value || state.desafioSemana.titulo;
+      state.desafioSemana.desc = document.getElementById('inputSemanaDesc').value || state.desafioSemana.desc;
+      atualizarInterface();
+      alert('Desafio semanal atualizado!');
+    }
+
+    function alterarPlano() {
+      state.plano = document.getElementById('selectPlanoAdm').value;
+      atualizarInterface();
+    }
+
+    function salvarNomeEscola() {
+      state.escola = document.getElementById('inputEditarEscola').value.trim() || state.escola;
+      localStorage.setItem('ecoEscolaCadastrada', state.escola);
+      atualizarInterface();
+      alert('Nome da escola atualizado!');
+    }
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('ecoDark', document.body.classList.contains('dark'));
+    }
+
+    function toggleDrawer() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('mobileOverlay').classList.toggle('hidden');
+    }
+
+    function renderizarGraficos(totalKg) {
+      const elDash = document.getElementById('chartDashboard');
+      if (elDash) {
+        const ctxDash = elDash.getContext('2d');
+        if (chartDashInstance) chartDashInstance.destroy();
+        chartDashInstance = new Chart(ctxDash, {
+          type: 'line',
+          data: {
+            labels: ['Mai', 'Jun', 'Jul', 'Ago'],
+            datasets: [{
+              label: 'Kg Coletados',
+              data: [100, 200, 200, totalKg],
+              borderColor: '#2E8B3C',
+              backgroundColor: 'rgba(46, 139, 60, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      const elMat = document.getElementById('chartMateriais');
+      if (elMat) {
+        const ctxMat = elMat.getContext('2d');
+        if (chartMatInstance) chartMatInstance.destroy();
+        chartMatInstance = new Chart(ctxMat, {
+          type: 'doughnut',
+          data: {
+            labels: ['Plástico', 'Papel/Papelão', 'Metal', 'Vidro'],
+            datasets: [{
+              data: [45, 30, 15, 10],
+              backgroundColor: ['#2E8B3C', '#4C36A8', '#F59E0B', '#64748B']
+            }]
+          },
+          options: { responsive: true, maintainAspectRatio: false }
+        });
+      }
+    }
+
+    window.onload = function() {
+      if (localStorage.getItem('ecoDark') === 'true') {
+        document.body.classList.add('dark');
+      }
+      const escolaSalva = localStorage.getItem('ecoEscolaCadastrada');
+      if (escolaSalva) {
+        document.getElementById('inputEscolaEstudante').value = escolaSalva;
+        document.getElementById('inputEditarEscola').value = escolaSalva;
+        state.escola = escolaSalva;
+      }
+    };
+  </script>
 </body>
-</html>
+    </html>
+    
